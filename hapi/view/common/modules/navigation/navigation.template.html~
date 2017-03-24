@@ -1,0 +1,19 @@
+<nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="/profile" class="brand-logo">Home</a>
+      <ul class="right hide-on-med-and-down">
+        <li ng-hide="navvm.isLoggedIn"><a href="login">Sign in</a></li>
+        <li ng-show="navvm.isLoggedIn"><a href="profile">{{ navvm.currentUser.name }}</a></li>
+      </ul>
+
+<!--mobile menu-->
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="login">Log In</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+<!-- End of mobile menu-->
+
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>

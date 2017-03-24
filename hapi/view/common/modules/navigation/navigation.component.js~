@@ -1,0 +1,14 @@
+angular.
+module('navigation').
+component('navigation', {
+	templateUrl: 'navigation/navigation.template.html',
+	controller: [
+		'$http',
+		'SrouteProvider',
+		navigationCtrl
+	]
+});
+
+function navigationCtrl('$http', '$routeProvider') {
+
+}
