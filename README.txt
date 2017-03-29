@@ -1,1 +1,1 @@
-Paste the files in this directory into appy.
+Use with Appy: https://jkheadley.github.io/appy/

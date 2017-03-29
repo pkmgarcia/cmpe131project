@@ -10,7 +10,7 @@ exports.getHome = {
 exports.getStatic = {
 	handler: {
 		directory: {
-			path: './view/',
+			path: './view',
 			index: true
 		}
 	}
@@ -34,26 +34,30 @@ exports.login = {
 				'Content-Length': Buffer.byteLength(postData)
 			}
 		};
+
 		var req = http.request(options, (res) => {
+			var responseData = '';
 			console.log(`STATUS: ${res.statusCode}`);
-			// console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+			console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
 			res.setEncoding('utf8');
 			res.on('data', (chunk) => {
 				console.log(`BODY: ${chunk}`);
-				});
+				responseData += chunk;
+			});
 			res.on('end', () => {
 				console.log('No more data in response.');
-				});
+				reply(responseData);
+			});
 		});
 
 		req.on('error', (e) => {
 			  console.log(`problem with request: ${e.message}`);
+			  reply(e);
 		});
 
 		// write data to request body
 		req.write(postData);
 		req.end();
-		reply();
 	}
 };
 
@@ -100,7 +104,51 @@ exports.register = {
 		// write data to request body
 		req.write(postData);
 		req.end();
-		reply('finished');
+	}
+};
+
+exports.tokenLogin = {
+	handler : function(request, reply) {
+		var postData = querystring.stringify({
+			'token' : request.payload['token'],
+			'_id' : request.payload['_id']
+		});
+
+		var options = {
+			method: 'POST',
+			hostname: 'localhost',
+			port: 8125,
+			path: '/tokenLogin',
+			agent: false,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length': Buffer.byteLength(postData)
+			}
+		};
+
+		var req = http.request(options, (res) => {
+			var responseData = '';
+			console.log(`STATUS: ${res.statusCode}`);
+			console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+			res.setEncoding('utf8');
+			res.on('data', (chunk) => {
+				console.log(`BODY: ${chunk}`);
+				responseData += chunk;
+			});
+			res.on('end', () => {
+				console.log('No more data in response.');
+				reply(responseData);
+			});
+		});
+
+		req.on('error', (e) => {
+			  console.log(`problem with request: ${e.message}`);
+			  reply(e);
+		});
+
+		// write data to request body
+		req.write(postData);
+		req.end();
 	}
 };
 
