@@ -1,1 +1,5 @@
-Use with Appy: https://jkheadley.github.io/appy/
+appy https://github.com/JKHeadley/appy
+
+restHapi https://github.com/JKHeadley/rest-hapi
+
+materialize http://materializecss.com/
