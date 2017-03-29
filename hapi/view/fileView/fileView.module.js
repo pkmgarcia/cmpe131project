@@ -1,0 +1,1 @@
+angular.module('fileView', ['core.authentication', 'core.data']);
