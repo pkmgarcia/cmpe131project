@@ -14,11 +14,6 @@ angular.module('pokeHubApp')
 					controller: 'registerCtrl',
 					controllerAs: 'vm'
 				})
-				.when('/view/emailSent', {
-					templateUrl: 'view/emailSent/emailSent.template.html',
-					controller: 'emailSentCtrl',
-					controllerAs: 'vm'
-				})
 				.when('/view/login', {
 					templateUrl: 'view/login/login.template.html',
 					controller: 'loginCtrl',
@@ -29,7 +24,25 @@ angular.module('pokeHubApp')
 					controller: 'profileCtrl',
 					controllerAs: 'vm'
 				})
-				.otherwise({redirectTo: '/view'});
+				.when('/view/status/emailSent', {
+					templateUrl: 'view/status/emailSent/emailSent.template.html',
+					controller: 'emailSentCtrl',
+					controllerAs: 'vm'
+				})
+				.when('/view/status/userActivated', {
+					templateUrl: 'view/status/userActivated/userActivated.template.html',
+					controller: 'userActivatedCtrl',
+					controllerAs: 'vm'
+				})
+				.when('/view/status/errorOccurred', {
+					templateUrl: 'view/status/errorOccurred/errorOccurred.template.html',
+					controller: 'errorOccurredCtrl',
+					controllerAs: 'vm'
+				})
+				.when('/user/activate', {
+					redirectTo: '/view/status/userActivated'
+				})
+				.otherwise({redirectTo: '/view/status/errorOccurred'});
 
 			// use the HTML5 History API
 			$locationProvider.html5Mode(true);

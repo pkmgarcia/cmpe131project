@@ -2,10 +2,10 @@ angular.module('pokeHubApp', [
 	'ngRoute',
 	'ngFileUpload',
 	'core',
+	'status',
 	'home',
 	'login',
 	'register',
-	'emailSent',
 	'profile'
 	]
 );

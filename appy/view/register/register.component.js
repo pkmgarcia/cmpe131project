@@ -12,7 +12,7 @@ angular.module('register')
 			};
 
 			vm.onSubmit = function () {
-				console.log('Submitting registration');
+				// console.log('Submitting registration');
 
 				var registerBody = vm.credentials;
 				registerBody.role = 'User';
@@ -23,7 +23,12 @@ angular.module('register')
 				Auth
 					.register(registerBody)
 					.then(function(successCallback){
-						$location.path('view/emailSent');
+						console.log(successCallback);
+						if(successCallback.status === 200) {
+							$location.path('view/status/emailSent');
+						} else {
+							$location.path('view/status/errorOccured');	
+						}
 					}, function(errorCallback){
 						console.log('Error occured while registering' + errorCallback);
 					});
