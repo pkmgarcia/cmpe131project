@@ -39,13 +39,11 @@ angular.module('core.authentication')
     this.login = function(user) {
       return $http.post('/login', user)
         .then(function successCallback(response) {
-          console.log(response.data);
           if(response.data['refreshToken']){
             $window.localStorage['token'] = response.data['refreshToken'];
           }
           return response;
         }, function errorCallback(response) {
-          console.log(response.data['refreshToken']);
           return response;
         });
     };

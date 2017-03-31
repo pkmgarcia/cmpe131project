@@ -22,16 +22,15 @@ angular.module('register')
 				};
 				Auth
 					.register(registerBody)
-					.then(function(successCallback){
-						console.log(successCallback);
-						if(successCallback.status === 200) {
+					.then( function(response) {
+						if(response.data['message'] === 'Success.') {
 							$location.path('view/status/emailSent');
 						} else {
-							$location.path('view/status/errorOccured');	
+							// TODO: Put what happens if a registration fails here
+							// $location.path('view/status/errorOccured');	
 						}
-					}, function(errorCallback){
-						console.log('Error occured while registering' + errorCallback);
-					});
+					}
+				);
 			};
 		}
 	]);
