@@ -8,7 +8,7 @@ angular.module('core.menu')
 		function menuBarCtrl($window, $location, Auth) {
 			var vm = this;
 			vm.onClick = function() {
-				if($window.localStorage['token']){
+				if($window.localStorage['token'] !== undefined){
 					Auth.logout();
 					$location.path('/view');
 				}

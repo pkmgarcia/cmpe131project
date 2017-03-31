@@ -14,7 +14,9 @@ angular.module('login')
 			Auth
 				.login(vm.credentials)
 				.then(function(response){
-					$location.path('view/profile');
+					if(response.data['refreshToken']){
+						$location.path('view/profile');
+					}
 				});
 		};
 	}]);
