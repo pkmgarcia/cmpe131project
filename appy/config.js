@@ -20,15 +20,14 @@ const constants = {
     SESSION: 'jwt-with-session',
     REFRESH: 'jwt-with-session-and-refresh-token'
   },
-  PORT: 8000,
-  APP_TITLE: 'PokeHub',
-  BUCKET_NAME: process.env.BUCKET_NAME
+  PORT: 8125,
+  APP_TITLE: 'appy API'
 };
 
 const config = {
   $meta: 'This file configures the appy API.',
   projectName: constants.APP_TITLE,
-  websiteName: 'PokeHub',
+  websiteName: 'appy Admin',
   port: {
     $filter: 'env',
     production: process.env.PORT,
@@ -57,7 +56,7 @@ const config = {
       port: 465,
       secure: true,
       auth: {
-        user: 'pkmgarcia.disposable@gmail.com',
+        user: 'appyhapi@gmail.com',
         pass: process.env.SMTP_PASSWORD
       }
     },
@@ -66,7 +65,7 @@ const config = {
       port: 465,
       secure: true,
       auth: {
-        user: 'pkmgarcia.disposable@gmail.com',
+        user: 'appyhapi@gmail.com',
         pass: process.env.SMTP_PASSWORD
       }
     }
@@ -78,14 +77,14 @@ const config = {
    */
   defaultEmail: {
     $filter: 'env',
-    local: 'pkmgarcia.disposable@gmail.com',
-    development: null,
-    production: null
+    local: 'appyhapi@gmail.com',
+    development: 'appyhapi@gmail.com',
+    production: 'appyhapi@gmail.com'
   },
   system: {
     fromAddress: {
-      name: 'The PokeHub Team',
-      address: 'pkmgarcia.disposable@gmail.com'
+      name: 'appy',
+      address: 'appyhapi@gmail.com'
     },
     toAddress: {
       name: 'appy',
@@ -95,7 +94,7 @@ const config = {
   clientURL: {
     $filter: 'env',
     local: 'http://localhost:' + constants.PORT,
-    production: 'http://54.202.137.14:' + constants.PORT,
+    production: 'http://localhost:' + constants.PORT,
     $default: 'http://localhost:' + constants.PORT
   },
   restHapiConfig: {

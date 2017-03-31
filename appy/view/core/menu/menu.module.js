@@ -1,1 +1,1 @@
-angular.module('core.menu', []);
+angular.module('core.menu', ['core.authentication']);

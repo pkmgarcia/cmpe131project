@@ -13,7 +13,7 @@ angular.module('login')
 		vm.onSubmit = function () {
 			Auth
 				.login(vm.credentials)
-				.then(function(){
+				.then(function(response){
 					$location.path('view/profile');
 				});
 		};

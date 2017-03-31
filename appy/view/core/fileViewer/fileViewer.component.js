@@ -2,8 +2,11 @@ angular.module('core.fileViewer')
 .component('fileViewer', {
 	templateUrl: 'view/core/fileViewer/fileViewer.template.html',
 	controller: function fileViewerCtrl() {
+/*		['Upload',
+		'$timeout',
+		function ('Upload', '$timeout')]) {
 			var vm = this;
-/*
+
 			vm.upload = function (files) {
 				if(files && files.length; i++) {
 

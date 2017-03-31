@@ -3,13 +3,13 @@ angular.module('core.authentication')
   '$http',
   '$window',
   function Auth($http, $window) {
-    var saveToken = function (token){
+    this.saveToken = function (token){
       $window.localStorage['token'] = token;
     };
 
-    var getToken = function () {
+    this.getToken = function () {
       return {
-        'token' : $window.localStorage['token'],
+        token: $window.localStorage['token'],
       }
     };
 /*
@@ -26,7 +26,7 @@ angular.module('core.authentication')
       }
     };
 */
-    register = function(user) {
+    this.register = function(user) {
       return $http.post('/register', user)
         .then(function successCallback(response) {
             return response;
@@ -36,7 +36,7 @@ angular.module('core.authentication')
         );
     };
 
-    login = function(user) {
+    this.login = function(user) {
       return $http.post('/login', user)
         .then(function successCallback(response) {
             $window.localStorage['token'] = response.data['refreshToken'];
@@ -47,16 +47,23 @@ angular.module('core.authentication')
         );
     };
 
-    logout = function() {
-      $window.localStorage.removeItem('token');
-    };
+    this.logout = function() {
+      var config = {
+        url: '/logout',
+        method: 'DELETE',
+        headers: {
+          authorization: $window.localStorage['token']
+        }
+      };
 
-    return {
-      saveToken : saveToken,
-      getToken : getToken,
-      register : register,
-      login : login,
-      logout : logout
+      $window.localStorage.removeItem('token');
+      return $http(config)
+        .then(function successCallback(response) {
+          return response;
+        }, function errorCallback(response) {
+          return response;
+        }
+      );
     };
   }
 ]);

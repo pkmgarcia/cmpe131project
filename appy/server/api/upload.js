@@ -1,6 +1,7 @@
 'use strict';
 
 const AWS = require('aws-sdk');
+
 const Config = require('../../config');
 
 module.exports = function (server, mongoose, logger) {
@@ -40,3 +41,4 @@ module.exports = function (server, mongoose, logger) {
 			}
 
 		});
+}
