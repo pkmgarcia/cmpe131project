@@ -1,23 +1,12 @@
 angular.module('core.fileViewer')
 .component('fileViewer', {
-	template: 'view/core/fileViewer/fileViewer.template.html',
-	controller: [
-		'$http',
-		'Upload',
-		'Auth',
-		'Data',
-		function fileViewerCtrl($http, Auth, Data) {
-			/*
-			$scope.$watch('files', function () {
-				$scope.upload($scope.files)
-			});
-			$scope.$watch('file', function () {
-				if ($scope.file != null) {
-					$scope.files = [$scope.file]; 
-				}
-			});
-			$scope.upload = function (files) {
-				if (files && files.length) {
+	templateUrl: 'view/core/fileViewer/fileViewer.template.html',
+	controller: function fileViewerCtrl() {
+			var vm = this;
+/*
+			vm.upload = function (files) {
+				if(files && files.length; i++) {
+
 					for (var i = 0; i < files.length; i++) {
 						var file = files[i];
 						if (!file.$error) {
@@ -45,8 +34,7 @@ angular.module('core.fileViewer')
 					}
 				}
 			}
-			*/
-		}
-	],
+*/
+		},
 	controllerAs: 'vm'
 });

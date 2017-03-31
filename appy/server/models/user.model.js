@@ -85,6 +85,10 @@ module.exports = function (mongoose) {
           alias: "permission",
           model: "permission",
           linkingModel: "user_permission"
+        },
+        file: {
+          type: "MANY_MANY",
+          model: "file"
         }
       },
       extraEndpoints: [

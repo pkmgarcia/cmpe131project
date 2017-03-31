@@ -7,6 +7,10 @@ module.exports = function (server, mongoose, logger) {
 		config: {
 			handler : function(request, reply) {
 			reply.file('./view/index.html');
+			},
+			tags: ['api'],
+			plugins: {
+				'hapi-swagger': {}
 			}
 		}
 	});
@@ -20,7 +24,12 @@ module.exports = function (server, mongoose, logger) {
 					path: 'view',
 					index: true
 				}
+			},
+			tags: ['api'],
+			plugins: {
+				'hapi-swagger': {}
 			}
+			
 		}
 	});
 };
