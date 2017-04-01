@@ -8,9 +8,19 @@ angular.module('core.authentication')
     };
 
     this.getToken = function () {
-      return {
-        token: $window.localStorage['token'],
-      }
+      return $window.localStorage['token'];
+    };
+
+    this.getId = function () {
+      return $window.localStorage['_id'];
+    };
+      
+    this.getFirstName = function () {
+      return $window.localStorage['firstName'];
+    };
+      
+    this.getLastName = function () {
+      return $window.localStorage['lastName'];
     };
 /*
     var currentUser = function() {
@@ -41,6 +51,9 @@ angular.module('core.authentication')
         .then(function successCallback(response) {
           if(response.data['refreshToken']){
             $window.localStorage['token'] = response.data['refreshToken'];
+            $window.localStorage['_id'] = response.data.user['_id'];
+            $window.localStorage['firstName'] = response.data.user['firstName'];
+            $window.localStorage['lastName'] = response.data.user['lastName'];
           }
           return response;
         }, function errorCallback(response) {
@@ -58,6 +71,7 @@ angular.module('core.authentication')
       };
 
       $window.localStorage.removeItem('token');
+      $window.localStorage.removeItem('_id');
       return $http(config)
         .then(function successCallback(response) {
           return response;

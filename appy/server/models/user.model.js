@@ -86,7 +86,7 @@ module.exports = function (mongoose) {
           model: "permission",
           linkingModel: "user_permission"
         },
-        file: {
+        files: {
           type: "MANY_MANY",
           model: "file"
         }

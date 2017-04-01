@@ -3,6 +3,9 @@ angular.module('profile')
 	'$http',
 	'Auth',
 	function profileCtrl($http, Auth) {
-		
+		var vm = this;
+
+		vm.firstName = Auth.getFirstName();
+		vm.lastName = Auth.getLastName();
 	}
 ]);

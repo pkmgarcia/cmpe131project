@@ -23,7 +23,7 @@ module.exports = function (mongoose) {
     collectionName: modelName,
     routeOptions: {
       associations: {
-        user: {
+        users: {
           type: "MANY_MANY",
           model: "user"
         }
