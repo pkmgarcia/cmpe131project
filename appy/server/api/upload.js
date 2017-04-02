@@ -29,7 +29,7 @@ module.exports = function (server, mongoose, logger) {
 						}
 						const returnData = {
 							signedRequest: data,
-							url: `https://${bucketName}.s3.amazonaws.com/${fileName}`
+							url: 'https://' + Config.get('/constants/BUCKET_NAME') + '.s3.amazonaws.com/' + fileName
 						};
 						reply(JSON.stringify(returnData));
 					});
