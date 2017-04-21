@@ -6,8 +6,7 @@ module.exports = function (mongoose) {
   var Schema = new mongoose.Schema({
     name: {
       type: Types.String,
-      required: true,
-      unique: true
+      required: true
     },
     type: {
       type: Types.String,
@@ -15,7 +14,7 @@ module.exports = function (mongoose) {
     },
     path: {
       type: Types.String,
-      required: true
+      required: false
     }
   });
   

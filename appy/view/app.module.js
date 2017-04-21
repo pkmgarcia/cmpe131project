@@ -9,19 +9,22 @@ angular.module('pokeHubApp', [
 	'profile'
 	])
 	.run(['$http', '$location', 'Auth', function($http, $location, Auth) {
+		$http.defaults.headers.common.Authorization = Auth.getToken();
 		var config = {
 			url: '/user/' + Auth.getId(),
 			method: 'GET',
-			headers: {
-				authorization: Auth.getToken(),
-			}
 		};
 
 		return $http(config)
 			.then(function successCallback(response) {
 				if(response.status === 200){
-					$location.path('view/profile');
+					var token = Auth.getToken()
+					Auth.saveToken(token);
+					Auth.updateTimer();
+					$location.path('/view/profile');
 				}
+				else
+					$location.path('/view');
 			}, function errorCallback(response) {
 				console.log(response);
 			});

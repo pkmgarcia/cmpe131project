@@ -4,22 +4,25 @@ angular.module('core.fileViewer')
 	controller: [
 		'$scope',
 		'$timeout',
+		'Auth',
 		'Upload',
 		'UploadFile',
-		function fileViewerCtrl($scope, $timeout, Upload, UploadFile) {
+		function fileViewerCtrl($scope, $timeout, Auth, Upload, UploadFile) {
 			var vm = this;
 			$scope.$watch('files', function (files) {
 				if(files && files.length) {
 					for (var i = 0; i < files.length; i++) {
 						var file = files[i];
 						if (!file.$error) {
-							UploadFile.uploadToS3(file);
-							file.path = UploadFile.getFilePath(file);
-							console.log(file.path);
+							Auth.createFile(file).then(function(result) {
+								UploadFile.uploadToS3(file, result);
+							});
+							console.log(file);
 						}
 					}
 				}
 			});
 		}],
+
 	controllerAs: 'vm'
 });

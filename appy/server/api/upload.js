@@ -39,6 +39,6 @@ module.exports = function (server, mongoose, logger) {
 					'hapi-swagger': {}
 				}
 			}
-
-		});
+		}
+	);
 }

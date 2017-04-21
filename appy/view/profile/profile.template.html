@@ -1,11 +1,22 @@
 <menu-bar></menu-bar>
 <div class="container">
 	<div class="row">
-		<h1 class="header black-text">{{vm.firstName}} {{vm.lastName}}</h1>
+		<h1 class="header black-text">{{vm.firstName}} {{vm.lastName}} {{$scope.age}}</h1>
 		<div class="divider"></div>
 	</div>
-	<ul>
-		<li ng-repeat="file in vm.files"> file </li>
-	</ul>
+
 	<file-viewer></file-viewer>
+
+	<ul>
+		<li ng-repeat="x in model.lastUpdated">
+			<div class="container">
+				<div class="row">
+					<h6 class="col s3">{{x.name}}</h6>
+					<a class="red btn col s3" ng-href="{{x.path}}">Download</a>
+					<div class="col s1"></div>
+					<btn class="grey btn col s3" ng-click="vm.deleteFile(x._id)">Delete</btn>
+				</div>
+			</div>
+		</li>
+	</ul>
 </div>

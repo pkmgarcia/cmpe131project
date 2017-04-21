@@ -157,6 +157,7 @@ module.exports = function (server, mongoose, logger) {
 
             mailer.sendEmail(emailOptions, template, context, Log)
               .catch(function (error) {
+                console.log(error);
                 Log.error('sending invite email failed:', error);
                 return reply(Boom.gatewayTimeout('Sending registration email failed.'));
               });

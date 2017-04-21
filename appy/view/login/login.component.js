@@ -11,10 +11,10 @@ angular.module('login')
 		};
 
 		vm.onSubmit = function () {
-			Auth
-				.login(vm.credentials)
+			Auth.login(vm.credentials)
 				.then(function(response){
 					if(response.data['refreshToken']){
+						Auth.updateTimer();
 						$location.path('view/profile');
 					}
 				});
