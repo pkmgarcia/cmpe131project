@@ -3,14 +3,18 @@
 </head>
 <div class="container" ngf-drop ngf-select ng-model="files"	ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
 						accept="image/*,application/pdf" ngf-pattern="image/*,application/pdf">
-	<div class="row">
-		<div class=" card col s12">
-			<ul>
+	<div class="droparea">
+
+	<!-- 		<img class = "size" src="view/core/fileViewer/img/opokeball.png" onmouseover="this.src='view/core/fileViewer/img/pokeball.png'" onmouseout="this.src='view/core/fileViewer/img/opokeball.png'">  -->
+       
+		<div class=" drop">
+				<img class = "size" src="view/core/fileViewer/img/opokeball.png" onmouseover="this.src='view/core/fileViewer/img/pokeball.png'" onmouseout="this.src='view/core/fileViewer/img/opokeball.png'"> 
+<!-- 			<ul>
 				<li ng-repeat="x in files">
 					<p>{{x.name}}</p>
 					<p>{{x.type}}</p>
 				</li>
-			</ul>
+			</ul> -->
 		</div>
 	</div>
 </div>

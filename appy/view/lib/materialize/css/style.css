@@ -12,3 +12,8 @@
 .icon-block .material-icons {
 	font-size: inherit;
 }
+
+body{
+    cursor: url(cursor/Pikachu.cur), default !important;
+}
+
