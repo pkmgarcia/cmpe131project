@@ -55,6 +55,15 @@ angular.module('profile')
 					console.log("Error deleting from S3");
 					console.log(result);
 				})
-		}
+		};
+
+		vm.onSubmit = function () {
+			var folder = {
+				"name" : vm.params.folderName,
+				"parent" : ''
+
+			};
+			Auth.createFolder(folder, '/');			
+		};
     }
 ]);

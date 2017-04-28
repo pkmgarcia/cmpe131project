@@ -89,6 +89,10 @@ module.exports = function (mongoose) {
         files: {
           type: "MANY_MANY",
           model: "file"
+        },
+        folders: {
+          type: "ONE_MANY",
+          model: "folder"
         }
       },
       extraEndpoints: [

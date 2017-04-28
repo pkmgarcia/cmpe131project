@@ -40,6 +40,14 @@ angular.module('core.authentication')
       return $http.get('/user/' + userId + '/file');
     }
 
+    this.getFolder = function() {
+      var userId = this.getId();
+      headers: {
+        authorization: $window.localStorage['token']
+      };
+      return $http.get('/user/'+userId + '/file')
+    }
+
     this.setAge = function(age) {
       age = age;
     }
@@ -174,6 +182,31 @@ angular.module('core.authentication')
       });
     };
 
+    this.createFolder = function(folder, folderpath) {
+
+      var userId = this.getId(); 
+      //make that body of the request to appy 
+      var params = { 
+        name: folder.name, 
+        path: folderpath,
+        parent: folder.parent 
+      }
+      //make the request 
+      return $http.post('/folder', params)
+        .then(function(result) {
+        //use the results of the request to add the folder to the user 
+          console.log(result);
+          var folderId = result.data._id;
+          var params = [folderId];
+          return $http.post('/user/' + userId + '/folder', params)
+        })
+    };
+
+    this.addFileToFolder = function(fileID, folderID){
+        //add file to a folder 
+        var params = [fileId];
+        return $http.post('/folder/' + folderId + '/file', params);
+    };
     // config is an array of strings to sort by
     this.getSortedFiles = function(userId, config) {
       var query = config.join('%24sort=');

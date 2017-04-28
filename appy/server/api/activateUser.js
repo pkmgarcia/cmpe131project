@@ -27,6 +27,7 @@ module.exports = function (server, mongoose, logger) {
 					res.on('end', () => {
 						console.log('No more data in response.');
 						if(res.statusCode == 200) {
+							// Add root folder here
 							reply.file('view/index.html')
 						} else {
 							reply.redirect('/view/');
