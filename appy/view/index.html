@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="pokeHubApp">
+<html lang="en" ng-app="pokeHubApp" >
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -9,13 +9,13 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="view/lib/materialize/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 	<link href="view/lib/materialize/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-</head>
-<body ng-view>
 
   <!--  Scripts-->
   <script src="view/profile/sidebar.js"></script>
-
-  <script src="view/lib/angular/angular.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="view/lib/angular/angular.min.js"></script>
+  <script type="text/javascript" src="view/lib/materialize/js/materialize.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script>
   <script src="view/lib/angular/angular-route.min.js"></script>
 
   <script src="view/app.module.js"></script>
@@ -51,8 +51,9 @@
   <script src="view/register/register.component.js"></script>
   <script src="view/profile/profile.module.js"></script>
   <script src="view/profile/profile.component.js"></script>
-  
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript" src="view/lib/materialize/js/materialize.js"></script>
+</head>
+
+<body ng-view>
 </body>
+
 </html>

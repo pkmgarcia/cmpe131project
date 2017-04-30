@@ -1,4 +1,5 @@
 angular.module('pokeHubApp', [
+	'ui.materialize',
 	'ngRoute',
 	'ngFileUpload',
 	'core',

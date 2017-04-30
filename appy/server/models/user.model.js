@@ -37,6 +37,10 @@ module.exports = function (mongoose) {
       type: Types.ObjectId,
       ref: "role"
     },
+    rootFolder: {
+      type: Types.ObjectId,
+      ref: "rootFolder"
+    },
     resetPassword: {
       token: {
         allowOnCreate: false,
@@ -91,8 +95,12 @@ module.exports = function (mongoose) {
           model: "file"
         },
         folders: {
-          type: "ONE_MANY",
+          type: "MANY_MANY",
           model: "folder"
+        },
+        rootFolder:{
+          type:"ONE_ONE",
+          model: "rootFolder"
         }
       },
       extraEndpoints: [

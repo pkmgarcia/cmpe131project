@@ -1,27 +1,13 @@
 'use strict';
 
 module.exports = function (mongoose) {
-  var modelName = "folder";
+  var modelName = "rootFolder";
   var Types = mongoose.Schema.Types;
   var Schema = new mongoose.Schema({
-    name: {
-      type: Types.String,
-      required: true,
-      unique: true
-    },
-    path: {
-      type: Types.String,
-      required: true
-    },
-    parent:{
-      type: Types.String,
-      required: false
-    },
-    isRoot:{
-      type: Types.Boolean,
-      required: false,
-      default: false
-    }
+    user: {
+  	  type: Types.ObjectId,
+  	  ref: "user"
+	 },
   });
   
   Schema.statics = {
@@ -29,11 +15,11 @@ module.exports = function (mongoose) {
     routeOptions: {
       associations: {
         files:{
-          type:"ONE_MANY",
+          type:"MANY_MANY",
           model:"file"
         },
-        users: {
-          type: "MANY_MANY",
+        user: {
+          type: "ONE_ONE",
           model: "user"
         },
         folders:{

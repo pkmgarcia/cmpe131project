@@ -15,6 +15,10 @@ module.exports = function (mongoose) {
     path: {
       type: Types.String,
       required: false
+    },
+    folder: {
+      type: Types.ObjectId,
+      ref: 'folder'
     }
   });
   
@@ -27,8 +31,12 @@ module.exports = function (mongoose) {
           model: "user"
         },
         folders: {
-          type: "ONE_ONE",
+          type: "MANY_ONE",
           model: "folder"
+        },
+        rootFolders:{
+          type: "MANY_MANY",
+          model: "rootFolder"
         }
       }
     }
