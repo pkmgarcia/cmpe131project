@@ -5,4 +5,5 @@ angular.module('core', [
 	'core.data',
 	'core.menu',
 	'core.fileViewer',
+	'core.footer'
 ]);

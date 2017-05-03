@@ -5,7 +5,7 @@ const Boom = require('boom');
 const Bcrypt = require('bcryptjs');
 const Chalk = require('chalk');
 
-module.exports = function (mongoose) {
+module.exports = function(mongoose) {
   const modelName = "user";
   const Types = mongoose.Schema.Types;
   const Schema = new mongoose.Schema({
@@ -37,9 +37,13 @@ module.exports = function (mongoose) {
       type: Types.ObjectId,
       ref: "role"
     },
-    rootFolder: {
+    file: {
       type: Types.ObjectId,
-      ref: "rootFolder"
+      ref: "file"
+    },
+    folder: {
+      type: Types.ObjectId,
+      red: "folder"
     },
     resetPassword: {
       token: {
@@ -69,7 +73,9 @@ module.exports = function (mongoose) {
         type: Types.Date
       }
     }
-  }, { collection: modelName });
+  }, {
+    collection: modelName
+  });
 
   Schema.statics = {
     collectionName: modelName,
@@ -97,15 +103,11 @@ module.exports = function (mongoose) {
         folders: {
           type: "MANY_MANY",
           model: "folder"
-        },
-        rootFolder:{
-          type:"ONE_ONE",
-          model: "rootFolder"
         }
       },
       extraEndpoints: [
         // Check Email Endpoint
-        function (server, model, options, Log) {
+        function(server, model, options, Log) {
           Log = Log.bind(Chalk.magenta("Check Email"));
           const User = model;
 
@@ -113,20 +115,21 @@ module.exports = function (mongoose) {
 
           Log.note("Generating Check Email endpoint for " + collectionName);
 
-          const checkEmailHandler = function (request, reply) {
+          const checkEmailHandler = function(request, reply) {
 
-            User.findOne({ email: request.payload.email })
-              .then(function (result) {
+            User.findOne({
+                email: request.payload.email
+              })
+              .then(function(result) {
                 if (result) {
                   Log.log("Email already exists.");
                   return reply(true);
-                }
-                else {
+                } else {
                   Log.log("Email doesn't exist.");
                   return reply(false);
                 }
               })
-              .catch(function (error) {
+              .catch(function(error) {
                 Log.error(error);
                 return reply(Boom.badImplementation('There was an error accessing the database.'));
               });
@@ -147,11 +150,22 @@ module.exports = function (mongoose) {
               },
               plugins: {
                 'hapi-swagger': {
-                  responseMessages: [
-                    { code: 200, message: 'Success' },
-                    { code: 400, message: 'Bad Request' },
-                    { code: 404, message: 'Not Found' },
-                    { code: 500, message: 'Internal Server Error' }
+                  responseMessages: [{
+                      code: 200,
+                      message: 'Success'
+                    },
+                    {
+                      code: 400,
+                      message: 'Bad Request'
+                    },
+                    {
+                      code: 404,
+                      message: 'Not Found'
+                    },
+                    {
+                      code: 500,
+                      message: 'Internal Server Error'
+                    }
                   ]
                 }
               }
@@ -160,10 +174,10 @@ module.exports = function (mongoose) {
         },
       ],
       create: {
-        pre: function (payload, Log) {
+        pre: function(payload, Log) {
 
           return mongoose.model('user').generatePasswordHash(payload.password, Log)
-            .then(function (hashedPassword) {
+            .then(function(hashedPassword) {
               payload.password = hashedPassword.hash;
               return payload;
             });
@@ -171,18 +185,21 @@ module.exports = function (mongoose) {
       }
     },
 
-    generatePasswordHash: function (password, Log) {
+    generatePasswordHash: function(password, Log) {
 
       return Bcrypt.genSalt(10)
-        .then(function (salt) {
+        .then(function(salt) {
           return Bcrypt.hash(password, salt);
         })
-        .then(function (hash) {
-          return { password, hash };
+        .then(function(hash) {
+          return {
+            password,
+            hash
+          };
         });
     },
 
-    findByCredentials: function (email, password, Log) {
+    findByCredentials: function(email, password, Log) {
 
       const self = this;
 
@@ -193,7 +210,7 @@ module.exports = function (mongoose) {
       let user = {};
 
       return self.findOne(query).lean()
-        .then(function (result) {
+        .then(function(result) {
           user = result;
 
           if (!user) {
@@ -204,7 +221,7 @@ module.exports = function (mongoose) {
 
           return Bcrypt.compare(password, source);
         })
-        .then(function (passwordMatch) {
+        .then(function(passwordMatch) {
           if (passwordMatch) {
             return user;
           }

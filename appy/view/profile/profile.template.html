@@ -1,77 +1,54 @@
-<head>
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-</head>
+<header>
+  <menu-bar></menu-bar>
+</header>
 
-<menu-bar></menu-bar>
+<main>
+  <div class="container">
+    <div class="container"/>
+    <file-viewer></file-viewer>
 
-<div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-left" style="display:none" id="mySidebar">
-  <button class="w3-bar-item w3-button w3-large"
-  onclick="sidebar_close()">Close &times;</button>
-  <h1> Welcome Pokemon Trainer </h1>
-  <p>Here are all the instructions you need to know in order to become a Pokemon Master!</p>
-  <ul>
-  	<li>1. Drag and drop things to the pokeball</li>
-  	<li>2. Click Download button to download file</li>
-  	<li>3. Click Delete button to delete file</li>
-  </ul>
+    <div class="row">
+      <form class="col s12">
+          <div class="input-field col s6">
+            <input placeholder="Folder Name" id="folderName" type="text" class="validate" ng-model="folderName">
+            <label for="folderName">Folder Name</label>
+            <btn class="red btn col s6" ng-click="vm.createFolder()" ng-disabled="folderName == null">Create Folder</btn>
+          </div>
+      </form>
+    </div>
 
-  <p> Enjoy your file sharing advanture</p>
+    <div class="row">
+      <h3 class ='header black-text'>Folders in {{currentFolder.name}}:</h3>
+    </div>
+    <ul>
+  		<li ng-repeat="folder in folders.folder">
+  			<div class="container">
 
-</div>
+  				<div class="row">
+  					<h6 class="col s3">{{folder.name}}</h6>
+  					<a class="red btn col s3">Open</a>
+  				</div>
+  			</div>
+  		</li>
+  	</ul>
+    <div class="row">
+      <h3 class ='header black-text'>Files in {{currentFolder.parent[0].name}}:</h3>
+    </div>
+  	<ul>
+  		<li ng-repeat="x in model.lastUpdated">
+  			<div class="container">
+  				<div class="row">
+  					<h6 class="col s3">{{x.name}}</h6>
+  					<a class="red btn col s3" ng-href="{{x.path}}" download>Download</a>
+  					<div class="col s1"></div>
+  					<btn class="grey btn col s3" ng-click="vm.deleteFile(x._id)">Delete</btn>
+  				</div>
+  			</div>
+  		</li>
+  	</ul>
+  </div>
+</main>
 
-<div zclass="w3-main" id="main">
-
-
-  <button class="w3-button w3-teal w3-xlarge" onclick="sidebar_open()">How to Use?</button>
-
-
-	<div class="container">
-		<div class="row">
-			<h1 class="header black-text">{{vm.firstName}} {{vm.lastName}} {{$scope.age}}</h1>
-			<div class="divider"></div>
-		</div>
-
-		<file-viewer></file-viewer>
-		<form ng-submit="vm.onSubmit()">
-			<div class="row">
-				<div class="input-field col s8">
-					<input id="folder_name" ng-model="vm.params.folderName" type="text">
-					<label for="folder_name">Folder Name</label>
-		        </div>
-				<button class="red btn col s4" type="submit">Create Folder</button>
-			</div>
-		</form>
-		</div>
-
-		<div class="divider"></div>
-
-		<ul>
-			<li ng-repeat="x in model.lastUpdated">
-				<div class="container">
-					<div class="row">
-						<i class="small material-icons col s1">insert_drive_file</i>
-						<h6 class="col s3">{{x.name}}</h6>
-						<a class="red btn col s2" ng-href="{{x.path}}" download>Download</a>
-
-						<div class="col s1"></div>
-
-                		<!-- Dropdown Trigger -->
-						<a class='dropdown-button btn col s2 red' data-activates='dropdown' dropdown data-hover="false">Move</a>
-						<!-- Dropdown Structure -->
-						<ul id='dropdown' class='dropdown-content'>
-						    <li><a href="javascript:void(0);">Link 1</a></li>
-						    <li><a href="javascript:void(0);">Link 2</a></li>
-						    <li><a href="javascript:void(0);">Link 3</a></li>
-						    <li><a href="javascript:void(0);">Link 4</a></li>
-						    <li><a href="javascript:void(0);">Link 5</a></li>
-						</ul>
-
-						<div class="col s1"></div>
-
-						<btn class="grey btn col s2" ng-click="vm.deleteFile(x._id)">Delete</btn>
-					</div>
-				</div>
-			</li>
-		</ul>
-	</div>
-</div>
+<footer class="page-footer red">
+  <appfooter></appfooter>
+</footer>

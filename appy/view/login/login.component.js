@@ -1,9 +1,8 @@
 angular.module('login')
 .controller('loginCtrl',[
-	'$window',
 	'$location',
 	'Auth',
-	function($window, $location, Auth) {
+	function($location, Auth) {
 		var vm = this;
 
 		vm.credentials = {
@@ -14,17 +13,14 @@ angular.module('login')
 		vm.onSubmit = function () {
 			Auth.login(vm.credentials)
 				.then(function(response){
-					console.log(response);
-					if(response.status === 400){
-						$window.alert(response.data.message);
-					}
-					if(response.data['refreshToken']){
+					if(response.data['refreshToken']) {
+						Auth.checkRoot();
+						Auth.updateFolders();
 						Auth.updateTimer();
-						if(Auth.getRootFolderId() === "undefined") {
-							Auth.createRootFolder();
-						}
 						$location.path('view/profile');
 					}
 				});
 		};
+
+		Waves.displayEffect();
 	}]);

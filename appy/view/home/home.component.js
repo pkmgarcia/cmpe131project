@@ -1,5 +1,6 @@
 angular.module('home')
 .controller('homeCtrl',
-	function homeCtrl() {
-
+	function homeCtrl() { 
+		Waves.displayEffect();
+		$('.carousel.carousel-slider').carousel({fullWidth: true});
 });

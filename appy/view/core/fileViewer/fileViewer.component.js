@@ -14,14 +14,15 @@ angular.module('core.fileViewer')
 					for (var i = 0; i < files.length; i++) {
 						var file = files[i];
 						if (!file.$error) {
-							Auth.createFile(file).then(function(result) {
-								UploadFile.uploadToS3(file, result);
-							});
+							Auth.createFile(file);
+							//UploadFile.uploadToS3(file);
+
 							console.log(file);
 						}
 					}
 				}
 			});
+
 		}],
 
 	controllerAs: 'vm'

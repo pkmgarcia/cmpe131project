@@ -1,14 +1,14 @@
 <head>
 	<link href="view/core/fileViewer/fileViewer.style.css" type="text/css" rel="stylesheet" />
+	<link href="view/core/fileViewer/animate.css" type="text/css" rel="stylesheet" />
 </head>
 <div class="container" ngf-drop ngf-select ng-model="files"	ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
 						accept="image/*,application/pdf" ngf-pattern="image/*,application/pdf">
 	<div class="droparea">
 
-	<!-- 		<img class = "size" src="view/core/fileViewer/img/opokeball.png" onmouseover="this.src='view/core/fileViewer/img/pokeball.png'" onmouseout="this.src='view/core/fileViewer/img/opokeball.png'">  -->
-       
-		<div class=" drop">
-				<img class = "size" src="view/core/fileViewer/img/opokeball.png" onmouseover="this.src='view/core/fileViewer/img/pokeball.png'" onmouseout="this.src='view/core/fileViewer/img/opokeball.png'"> 
+       <h2 class = "intro animated rubberBand"> DROP YOUR FILES OR CLICK HERE </h2>
+       <img src="view/core/fileViewer/img/pikachu.png" class = "size animated bounce" style = "width: 90px; height: auto">
+		<div class="drop">				
 <!-- 			<ul>
 				<li ng-repeat="x in files">
 					<p>{{x.name}}</p>

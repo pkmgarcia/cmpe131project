@@ -1,341 +1,346 @@
 angular.module('core.authentication')
-.service('Auth', [
-  '$http',
-  '$window',
-  '$timeout',
-  '$q',
-  function Auth($http, $window, $timeout, $q) {
+  .service('Auth', [
+    '$http',
+    '$window',
+    '$timeout',
+    '$q',
+    function Auth($http, $window, $timeout, $q) {
 
-    var self = this;
-    var age = 10;
-    var data = { 
-      lastUpdated: [], 
-    };
-
-    this.saveToken = function (token){
-      $window.localStorage['token'] = token;
-    };
-
-    this.getToken = function () {
-      return $window.localStorage['token'];
-    };
-
-    this.saveRootFolderId = function(rootFolderId){
-      $window.localStorage['rootFolderId'] = rootFolderId;
-    };
-
-    this.getRootFolderId = function(){
-      return $window.localStorage['rootFolderId'];
-    }
-
-    this.saveFolderId = function(folderId) {
-      $window.localStorage['folderId'] = folderId;
-    }
-
-    this.getFolderId = function() {
-      return $window.localStorage['folderId'];
-    }
-
-    this.getId = function () {
-      return $window.localStorage['_id'];
-    };
-      
-    this.getFirstName = function () {
-      return $window.localStorage['firstName'];
-    };
-
-    this.getLastName = function () {
-      return $window.localStorage['lastName'];
-    };
-
-    this.getFiles = function() {
-      var userId = this.getId();
-      headers: {
-        authorization: $window.localStorage['token']
-      }
-      return $http.get('/user/' + userId + '/file');
-    }
-
-    this.getFolders = function() {
-      var userId = this.getId();
-      headers: {
-        authorization: $window.localStorage['token']
+      var self = this;
+      var age = 10;
+      var data = {
+        lastUpdated: [],
       };
-      return $http.get('/user/'+userId + '/file')
-    }
+      var currentFolder = {
+        parent: [],
+      }
 
-    this.setAge = function(age) {
-      age = age;
-    }
+      var folders = {
+        folder: [],
+      };
 
-    this.getAge = function() {
-      return age;
-    }
 
-    this.getData = function() {
-      return data;
-    }
 
-    this.updateTimer = function() {
-      this.getFiles().then(function successCallback(result) {
-          if(data.lastUpdated === null) {
+      this.saveToken = function(token) {
+        $window.localStorage['token'] = token;
+      };
+
+      this.getToken = function() {
+        return $window.localStorage['token'];
+      };
+
+      this.getId = function() {
+        return $window.localStorage['_id'];
+      };
+
+      this.getFirstName = function() {
+        return $window.localStorage['firstName'];
+      };
+
+      this.getLastName = function() {
+        return $window.localStorage['lastName'];
+      };
+
+      this.getFiles = function() {
+        var userId = this.getId();
+        headers: {
+          authorization: $window.localStorage['token']
+        }
+        return $http.get('/user/' + userId + '/file');
+      };
+
+      this.setAge = function(age) {
+        age = age;
+      };
+
+      this.getAge = function() {
+        return age;
+      };
+
+      this.getData = function() {
+        return data;
+      };
+
+      this.getFolders = function(stat) {
+        var userId = this.getId();
+        headers: {
+          authorization: $window.localStorage['token']
+        }
+
+        if (stat) {
+
+          var param = {
+            "name": "main",
+          }
+          return $http.get('/user/' + userId + '/folder', param)
+        } else {
+
+          return $http.get('/user/' + userId + '/folder')
+        }
+
+      }
+
+      this.getCurrentFolder = function() {
+        return currentFolder;
+      };
+
+      this.setCurrentFolder = function(folder) {
+        var newCurrent = {
+          name: folder.name,
+          id: folder.id
+        };
+
+        currentFolder.parent = newCurrent;
+      }
+
+      this.checkRoot = function() {
+
+        this.getFolders(false).then(function successCallback(result) {
+
+          if (result.data.docs.length === 0) {
+            self.createRootFolder();
+          }
+        }, function errorCallback(result) {
+          console.log("ERROR");
+        });
+      };
+
+      this.createRootFolder = function() {
+
+        var params = {
+          name: 'main',
+          parent: '/'
+        };
+
+        headers: {
+          authorization: this.getToken()
+        }
+
+        return $http.post('/folder', params)
+          .then(function successCallback(result) {
+            var currentFolder = {
+              name: 'main',
+              id: result.data._id
+            };
+
+            //self.setCurrentFolder(currentFolder);
+
+            param = [result.data._id];
+            $http.post('/user/' + self.getId() + '/folder', param)
+              .then(function successCallback(result) {
+                console.log('Folder added to user');
+              }, function errorCallback(result) {
+                console.log("Folder wasn't added to the user.");
+              });
+          }, function errorCallback(result) {
+
+          });
+      };
+
+      this.updateFolders = function() {
+
+        this.getFolders(false).then(function successCallback(result) {
+
+          if (folders.folder === null) {
+            console.log("folders are empty");
+          }
+          self.setCurrentFolder(result.data.docs[0]);
+          folders.folder = [];
+          for (i = 1; i < result.data.docs.length; i++) {
+            folders.folder.push(result.data.docs[i]);
+          }
+
+        }, function errorCallback(result) {
+          console.log(result);
+          folders.folder = [];
+        });
+
+      };
+
+      this.updateCurrentFolder = function() {
+        // true is used for quertying root folder
+        this.getFolders(true).then(function successCallback(result) {
+          debugger
+          var mainFolder = {
+            name: result.data.docs[0].name,
+            id: result.data.docs[0]._id
+          }
+          currentFolder.parent = [];
+          currentFolder.parent.push(mainFolder);
+          self.setCurrentFolder(mainFolder);
+        }, function errorCallback(result) {
+          console.log(result);
+        });
+      };
+
+      this.updateTimer = function() {
+
+        this.getFiles().then(function successCallback(result) {
+          if (data.lastUpdated === null) {
             console.log("data.lastUpdated is null");
           }
           data.lastUpdated = [];
           for (i = 0; i < result.data.docs.length; i++) {
             data.lastUpdated.push(result.data.docs[i]);
           }
-          console.log(data.lastUpdated)
         }, function errorCallback(result) {
-          console.log("Error in Auth.updateTimer.");
           console.log(result);
           data.lastUpdated = [];
-        })
-    };
+        });
+      };
 
-    this.register = function(user) {
-      return $http.post('/register', user)
-        .then(function successCallback(response) {
+      this.register = function(user) {
+        return $http.post('/register', user)
+          .then(function successCallback(response) {
             return response;
           }, function errorCallback(response) {
             return response;
-          }
-        );
-    };
-
-    this.login = function(user) {
-      return $http.post('/login', user)
-        .then(function successCallback(response) {
-          if(response.data['refreshToken']){
-            $window.localStorage['token'] = response.data['refreshToken'];
-            $window.localStorage['_id'] = response.data.user['_id'];
-            $window.localStorage['firstName'] = response.data.user['firstName'];
-            $window.localStorage['lastName'] = response.data.user['lastName'];
-            $window.localStorage['rootFolderId'] = response.data.user['rootFolder'];
-            $window.localStorage['folderId'] = response.data.user['rootFolder'];
-            var data = [];
-            for (i = 0; i < response.data.user.files.length; i++) {
-              data[i] = response.data.user.files[i];
-            }
-            $window.localStorage.setItem('files', JSON.stringify(data));
-            $http.defaults.headers.common.Authorization = response.data['refreshToken'];
-          }
-          return response;
-        }, function errorCallback(response) {
-          return response;
-        });
-    };
-
-    this.logout = function() {
-      var config = {
-        url: '/logout',
-        method: 'DELETE',
-        headers: {
-          authorization: $window.localStorage['token']
-        }
+          });
       };
 
-      $window.localStorage.removeItem('token');
-      $window.localStorage.removeItem('_id');
-      $window.localStorage.removeItem('firstName');
-      $window.localStorage.removeItem('lastName');
-      $window.localStorage.removeItem('rootFolderId');
-      $window.localStorage.removeItem('folderId');
-      $http.defaults.headers.common.Authorization = null;
-      return $http(config)
-        .then(function successCallback(response) {
-          return response;
-        }, function errorCallback(response) {
-          return response;
+      this.register = function(user) {
+        return $http.post('/register', user)
+          .then(function successCallback(response) {
+            return response;
+          }, function errorCallback(response) {
+            return response;
+          });
+      };
+
+      this.login = function(user) {
+        return $http.post('/login', user)
+          .then(function successCallback(response) {
+            if (response.data['refreshToken']) {
+              $window.localStorage['token'] = response.data['refreshToken'];
+              $window.localStorage['_id'] = response.data.user['_id'];
+              $window.localStorage['firstName'] = response.data.user['firstName'];
+              $window.localStorage['lastName'] = response.data.user['lastName'];
+              $http.defaults.headers.common.Authorization = response.data['refreshToken'];
+            }
+            return response;
+          }, function errorCallback(response) {
+            return response;
+          });
+      };
+
+      this.logout = function() {
+        var config = {
+          url: '/logout',
+          method: 'DELETE',
+          headers: {
+            authorization: $window.localStorage['token']
+          }
+        };
+
+        $window.localStorage.removeItem('token');
+        $window.localStorage.removeItem('_id');
+        $http.defaults.headers.common.Authorization = null;
+        return $http(config)
+          .then(function successCallback(response) {
+            return response;
+          }, function errorCallback(response) {
+            return response;
+          });
+      };
+
+
+
+
+      this.createFile = function(file) {
+
+        var userId = self.getId();
+
+        var params = {
+          name: file.name,
+          type: file.type
+        };
+
+        headers: {
+          authorization: self.getToken()
         }
-      );
-    };
+        return $http.post('/file', params)
+          .then(function successCallback(result) {
+            // add user - file association
+            var fileId = result.data._id;
+            var params = [fileId];
+            return $http.post('/user/' + userId + '/file', params)
+              .then(function successCallback(result) {
 
-    this.createFile = function(file, folderId) {
+                self.associateWithFolder(params);
+              })
 
-      return $q(function(resolve, reject) {
-        setTimeout(function() {
-          // Create data for requests
-          var userId = self.getId();
-          var params = {
-            name: file.name,
-            type: file.type
-          }
-          
-          // Create the file
-          $http.post('/file', params)
-            // On success, change the path of the file to the download url
-            .then(function successCallback(result) {
-              var fileId = result.data._id;
-              var params = [fileId];
-              console.log("File Id: " + fileId);
-              var data = {
-                path: "http://sjsu.cmpe131.phub.s3.amazonaws.com/" + fileId
-              };
-
-              var config = {
-                headers: {
-                  authorization: self.getToken()
-                }
-              };
-
-              $http.put('/file/' + fileId, data)
-                // On success, add file to user
-                .then(function successCallback(result) {
-                  $http.post('/user/' + userId + '/file', params)
-                    // On success add file to current folder
-                    .then(function successCallback(result) {
-                      if(self.getFolderId() === self.getRootFolderId()) {
-                        $http.post('/rootFolder/' + self.getRootFolderId() + '/file', params)
-                          .then(function successCallback(result) {
-                            console.log(result);
-                            console.log("Successfully created file and added to current user/folder.");
-                            resolve(fileId);
-                          }, function errorCallback(result) {
-                            console.log("Error in Auth.createFile(file, folderId): $http.post('/rootFolder/' + self.getRootFolderId() + '/file', [result.config.data[0]]");
-                          });
-                      }
-                      else{
-                        console.log("Adding file to non-root folder.");
-                      }
-                    }, function errorCallback(result) {
-                      console.log("Error in Auth.createFile(file, folderId): $http.post('/user/' + userId + '/file/' + fileId)");         
-                      reject("Error in Auth.createFile(file, folderId): $http.post('/user/' + userId + '/file/' + fileId)");
-                    });
-                }, function errorCallback(result) {
-                  console.log("Error in Auth.createFile(file, folderId): $http.put('/file/' + fileId)");
-                  reject("Error in Auth.createFile(file, folderId): $http.put('/file/' + fileId)");
-                });
-            // On failure
-            }, function errorCallback(result) {
-              console.log("Error in Auth.createFile(file, folderId): $http.post('/file/', params)");
-              reject("Error in Auth.createFile(file, folderId): $http.post('/file/', params)");
-            });
-        }, 1000);
-      });
-    };
-
-    this.createFolder = function(folder, folderpath) {
-      var userId = self.getId(); 
-      //make that body of the request to appy 
-      var params = { 
-        name: folder.name, 
-        path: folderpath,
-        parent: folder.parent 
-      }
-      //make the request 
-      $http.post('/folder', params)
-        .then(function successCallback(result) {
-        //use the results of the request to add the folder to the user 
-
-          console.log(result.data._id);
-          var folderId = result.data._id;
-          var params = [folderId];
-          $http.post('/user/' + userId + '/folder', params)
-            .then(function successCallback(result) {
-              console.log("Successfully created folder and added to current user.");
-            }, function errorCallback(result) {
-              $window.alert("Error creating folder.");
-            });
           }, function errorCallback(result) {
-            console.log("Error in Auth.createFolder(folder, folderpath): $http.post('/folder', params)");
-            console.log(result);
-          })
-    };
+            console.log("Error");
+          });
 
-    this.createRootFolder = function() {
-      var userId = self.getId();
-      //make that body of the request to appy 
-      var params = [{
-        user: userId
-      }];
-      //make the request 
-      $http.post('/rootFolder', params)
-        .then(function successCallback(result) {
-        //use the results of the request to add the rootfolder to the user
-          console.log(result);
-          var rootFolderId = result.data[0]._id;
-          console.log(rootFolderId);
-          self.saveRootFolderId(rootFolderId);
-          var req = {
-            method: 'PUT',
-            url: '/user/' + userId,
-            data: {
-              rootFolder: rootFolderId
-            },
-            headers: {
-              Authorization: self.getToken()
-            }
-          };
-          $http(req)
-            .then(function successCallback(result) {
-              console.log("Successfully created rootFolder and added to current user.");
-            }, function errorCallback(result) {
-              $window.alert("Error creating rootFolder.");
-            });
+      };
+
+      this.createFolder = function(folderName) {
+
+        var userId = self.getId();
+
+        var params = {
+          name: folderName,
+          parent: currentFolder.name
+        };
+
+        headers: {
+          authorization: self.getToken()
+        }
+        return $http.post('/folder', params)
+          .then(function successCallback(result) {
+            // add user - file association
+            var folderId = result.data._id;
+            var params = [folderId];
+            return $http.post('/user/' + userId + '/folder', params)
+              .then(function successCallback(result) {
+                self.associateFolderWithFolder(result);
+              })
+
           }, function errorCallback(result) {
-            console.log("Error in Auth.createRootFolder(): $http.(req)");
-            console.log(result);
-          })
-    };
+            console.log("Error");
+          });
 
-    this.deleteFile = function (fileId) {
-      var params = {
-        "fileId": fileId
+      };
+
+      this.associateFolderWithFolder = function(result) {
+
+        var param = [result.data._id];
+
+        headers: {
+          authorization: self.getToken()
+        }
+
+        return $http.post('/folder/' + currentFolder.id + '/folder', param)
+          .then(function successCallback(result) {
+            self.updateFolders();
+          }, function errorCallback(result) {
+            console.log("Error");
+          });
+
       }
-      console.log(params);
-      // Delete file from S3
-      $http.post("/deleteFromS3", params)
-        .then(function successCallback(result) {
-          console.log("Successfully deleted from S3");
 
-          var key = result.data.Deleted[0].Key;
+      this.associateWithFolder = function(result) {
 
-          var config = {
-            headers: {
-              Authorization: self.getToken()
-            }
-          }
-          // Remove file from user.
-          $http.delete('/user/' + self.getId() + '/file/' + result.data.Deleted[0].Key, config)
-            .then(function successCallback(result) {
-              console.log("Successfully removed file from user");
-                var config = {
-                  data: [ {
-                    _id : key,
-                    hardDelete: true
-                  }],
-                  headers: {
-                    Authorization: self.getToken()
-                  }
-                }
-              // Remove file from its folders.
-              // Delete file from database.
-              $http.delete('/file', config)
-                .then(function successCallback(result) {
-                  console.log("Successfully deleted file from database.");
-                }, function errorCallback(result) {
-                  console.log("Error deleting file from database.");
-                  console.log(result);
-                });
-              self.updateTimer();
-            }, function errorCallback(result) {
-              console.log("Error removing file from user.");
-            });
-        }, function errorCallback(result) {
-          console.log("Error deleting from S3");
-          console.log(result);
-        })
-    };
-    this.addFileToFolder = function(fileID, folderID){
-        //add file to a folder 
-        var params = [fileId];
-        return $http.post('/folder/' + folderId + '/file', params);
-    };
-    // config is an array of strings to sort by
-    this.getSortedFiles = function(userId, config) {
-      var query = config.join('%24sort=');
-      return $http.post('/user/' + userId + '/file?%24sort=' + query);
-    };
- }
-]);
+        var param = [result];
+
+        headers: {
+          authorization: self.getToken()
+        }
+
+        return $http.post('/folder/' + currentFolder.id + '/file', param)
+          .then(function successCallback(result) {
+            self.updateTimer();
+          }, function errorCallback(result) {
+            console.log("Error");
+          });
+
+      }
+
+      // config is an array of strings to sort by
+      this.getSortedFiles = function(userId, config) {
+        var query = config.join('%24sort=');
+        return $http.post('/user/' + userId + '/file?%24sort=' + query);
+      };
+    }
+  ]);

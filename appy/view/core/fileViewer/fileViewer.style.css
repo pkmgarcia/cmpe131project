@@ -1,20 +1,31 @@
-.droparea {
+.droparea{
 	/*border: 5px dashed #DDD;*/
 	/*width: 200px;*/
 	height: 400px;
 	text-align: center;
-/*	padding-top: 25px;*/
-	/*margin: 10px;*/
+	border: 1px solid #DDD;
+    background-color: #FFF;
+    border-radius: 25px;
+    padding: 20px; 
+  
 }
 
-
+.droparea:hover {
+	background-color: #ff6666;
+}
 
 .dragover {
-
+  border: 2px dashed  #00001a;
+  background-color: #ff6666;
+  border-radius: 25px;
+  padding: 20px; 
 }
 
 
+.intro{
+	padding-top: 30px;
+}
+
 .size{
-	width: 380px;
-    height: 340;
+	padding-top: 35px;
 }

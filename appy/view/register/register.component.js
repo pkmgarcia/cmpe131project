@@ -24,7 +24,7 @@ angular.module('register')
 				  },
 				  "registerType": "Register"
 				}
-				
+
 				Auth
 					.register(params)
 					.then( function(response) {
@@ -41,5 +41,7 @@ angular.module('register')
 					}
 				);
 			};
+
+			Waves.displayEffect();
 		}
 	]);

@@ -1,5 +1,4 @@
 angular.module('pokeHubApp', [
-	'ui.materialize',
 	'ngRoute',
 	'ngFileUpload',
 	'core',
@@ -21,7 +20,9 @@ angular.module('pokeHubApp', [
 				if(response.status === 200){
 					var token = Auth.getToken()
 					Auth.saveToken(token);
+					Auth.updateCurrentFolder();
 					Auth.updateTimer();
+					Auth.updateFolders();
 					$location.path('/view/profile');
 				}
 				else

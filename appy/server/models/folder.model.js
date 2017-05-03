@@ -7,23 +7,13 @@ module.exports = function (mongoose) {
     name: {
       type: Types.String,
       required: true,
-      unique: true
-    },
-    path: {
-      type: Types.String,
-      required: true
     },
     parent:{
       type: Types.String,
-      required: false
-    },
-    isRoot:{
-      type: Types.Boolean,
-      required: false,
-      default: false
-    }
+      required: true
+    }    
   });
-  
+
   Schema.statics = {
     collectionName: modelName,
     routeOptions: {
@@ -43,6 +33,6 @@ module.exports = function (mongoose) {
       }
     }
   };
-  
+
   return Schema;
 };

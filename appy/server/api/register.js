@@ -119,7 +119,6 @@ module.exports = function (server, mongoose, logger) {
               websiteName: Config.get('/websiteName'),
               key: token
             };
-
             mailer.sendEmail(emailOptions, template, context, Log)
               .catch(function (error) {
                 Log.error('sending welcome email failed:', error);
@@ -173,7 +172,7 @@ module.exports = function (server, mongoose, logger) {
 
     var headersValidation = Joi.object({
       'authorization': Joi.string()
-    }).options({allowUnknown: true}); 
+    }).options({allowUnknown: true});
 
     const optionalAuth = authStrategy === false ? false : { mode: 'try', strategy: authStrategy };
 

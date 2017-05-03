@@ -22,11 +22,11 @@ internals.templateCache = {};
 internals.renderTemplate = function (signature, context, Log) {
 
   const deferred = Q.defer();
-
+/*
   if (internals.templateCache[signature]) {
     return internals.templateCache[signature](context);
   }
-
+*/
   const filePath = __dirname + '/emails/' + signature + '.hbs.md';
   const options = { encoding: 'utf-8' };
 

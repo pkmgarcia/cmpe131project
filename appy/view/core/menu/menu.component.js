@@ -7,12 +7,21 @@ angular.module('core.menu')
 		'Auth',
 		function menuBarCtrl($window, $location, Auth) {
 			var vm = this;
+			vm.firstName = Auth.getFirstName();
+			vm.lastName = Auth.getLastName();
 			vm.onClick = function() {
 				if($window.localStorage['token'] !== undefined){
 					Auth.logout();
 					$location.path('/view');
 				}
 			}
+
+	        $(".button-collapse").sideNav({
+    	    	edge: 'right', // Choose the horizontal origin
+	        });
+	        Waves.displayEffect();
+	        $('.dropdown-button').dropdown();
+			$('.collapsible').collapsible();
 		}
 	],
 	controllerAs: 'vm'

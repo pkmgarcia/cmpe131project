@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (mongoose) {
+module.exports = function(mongoose) {
   var modelName = "file";
   var Types = mongoose.Schema.Types;
   var Schema = new mongoose.Schema({
@@ -18,10 +18,10 @@ module.exports = function (mongoose) {
     },
     folder: {
       type: Types.ObjectId,
-      ref: 'folder'
+      ref: "folder"
     }
   });
-  
+
   Schema.statics = {
     collectionName: modelName,
     routeOptions: {
@@ -30,17 +30,12 @@ module.exports = function (mongoose) {
           type: "MANY_MANY",
           model: "user"
         },
-        folders: {
-          type: "MANY_ONE",
+        folders:{
+          type:"MANY_ONE",
           model: "folder"
-        },
-        rootFolders:{
-          type: "MANY_MANY",
-          model: "rootFolder"
         }
       }
     }
   };
-  
   return Schema;
 };
