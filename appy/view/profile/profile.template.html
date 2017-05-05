@@ -5,48 +5,44 @@
 <main>
   <div class="container">
     <div class="container"/>
+
     <file-viewer></file-viewer>
 
-    <div class="row">
-      <form class="col s12">
-          <div class="input-field col s6">
-            <input placeholder="Folder Name" id="folderName" type="text" class="validate" ng-model="folderName">
-            <label for="folderName">Folder Name</label>
-            <btn class="red btn col s6" ng-click="vm.createFolder()" ng-disabled="folderName == null">Create Folder</btn>
-          </div>
-      </form>
-    </div>
+    <form class="col s12" ng-submit="vm.onSubmit()">
+      <div class="row">
+        <div class="input-field col s8">
+          <input id="folder_name" ng-model="vm.params.folderName" type="text">
+          <label for="folder_name">Folder Name</label>
+            </div>
+        <button class="red btn s4 valign-wrapper" type="submit">Create Folder</button>
+      </div>
+    </form>
 
-    <div class="row">
-      <h3 class ='header black-text'>Folders in {{currentFolder.name}}:</h3>
-    </div>
     <ul>
-  		<li ng-repeat="folder in folders.folder">
-  			<div class="container">
+      <li ng-repeat="x in folders.lastUpdated">
+        <div class="container">
+          <div class="row">
+            <i class="small material-icons col s1">folder</i>
+            <h6 class="col s10">{{x.name}}</h6>
+          </div>
+        </div>
+      </li>
+    </ul>
 
-  				<div class="row">
-  					<h6 class="col s3">{{folder.name}}</h6>
-  					<a class="red btn col s3">Open</a>
-  				</div>
-  			</div>
-  		</li>
-  	</ul>
-    <div class="row">
-      <h3 class ='header black-text'>Files in {{currentFolder.parent[0].name}}:</h3>
-    </div>
-  	<ul>
-  		<li ng-repeat="x in model.lastUpdated">
-  			<div class="container">
-  				<div class="row">
-  					<h6 class="col s3">{{x.name}}</h6>
-  					<a class="red btn col s3" ng-href="{{x.path}}" download>Download</a>
-  					<div class="col s1"></div>
-  					<btn class="grey btn col s3" ng-click="vm.deleteFile(x._id)">Delete</btn>
-  				</div>
-  			</div>
-  		</li>
-  	</ul>
-  </div>
+    <ul>
+      <li ng-repeat="x in files.lastUpdated">
+        <div class="container">
+          <div class="row">
+            <i class="small material-icons col s1">insert_drive_file</i>
+            <h6 class="col s4">{{x.name}}</h6>
+            <a class="red btn col s2" ng-href="{{x.path}}" download="{{x.name}}">Download</a>
+            <div class="col s1"></div>
+            <btn class="grey btn col s2" ng-click="vm.deleteFile(x._id)">Delete</btn>
+          </div>
+        </div>
+      </li>
+    </ul>
+    
 </main>
 
 <footer class="page-footer red">

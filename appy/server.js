@@ -21,27 +21,29 @@ Composer((err, server) => {
 		Maybe pass the response to the error page and have that page
 		display the output (statusCode, message).
 	*/
-	server.ext('onPreResponse', function (request, reply) {
-		if(request.response.output){
-			// If the client tries to access a page they are not supposed to, 
-			// then redirect to /view.
-		    if (request.response.output.statusCode === 403) {
-		        return reply.redirect('/view');
-		    }
 
-		    // Not Found.
-		    if (request.response.output.statusCode === 404) {
-		        return reply.redirect('/view');
-		    }
+	// server.ext('onPreResponse', function (request, reply) {
+	// 	console.log(request.response.output);
+	// 	if(request.response.output){
+	// 		// If the client tries to access a page they are not supposed to, 
+	// 		// then redirect to /view.
+	// 	    if (request.response.output.statusCode === 403) {
+	// 	        return reply.redirect('/view');
+	// 	    }
 
-		    // Internal server error.
-		    if (request.response.output.statusCode === 500) {
-		        return reply.redirect('/view');
-		    }
-		}
+	// 	    // Not Found.
+	// 	    if (request.response.output.statusCode === 404) {
+	// 	        return reply.redirect('/view');
+	// 	    }
 
-	    return reply.continue();
-	});
+	// 	    // Internal server error.
+	// 	    if (request.response.output.statusCode === 500) {
+	// 	        return reply.redirect('/view');
+	// 	    }
+	// 	}
+
+	//     return reply.continue();
+	// });
 
   server.start(() => {
     RestHapi.logUtil.logActionComplete(RestHapi.logger, "Server Initialized", server.info);

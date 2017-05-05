@@ -37,14 +37,6 @@ module.exports = function(mongoose) {
       type: Types.ObjectId,
       ref: "role"
     },
-    file: {
-      type: Types.ObjectId,
-      ref: "file"
-    },
-    folder: {
-      type: Types.ObjectId,
-      red: "folder"
-    },
     resetPassword: {
       token: {
         allowOnCreate: false,
@@ -97,11 +89,13 @@ module.exports = function(mongoose) {
           linkingModel: "user_permission"
         },
         files: {
-          type: "MANY_MANY",
+          type: "ONE_MANY",
+          foreignField: "user",
           model: "file"
         },
         folders: {
-          type: "MANY_MANY",
+          type: "ONE_MANY",
+          foreignField: "user",
           model: "folder"
         }
       },

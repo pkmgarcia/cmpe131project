@@ -16,6 +16,10 @@ module.exports = function(mongoose) {
       type: Types.String,
       required: false
     },
+    user: {
+      type: Types.ObjectId,
+      ref: "user"
+    },
     folder: {
       type: Types.ObjectId,
       ref: "folder"
@@ -26,11 +30,11 @@ module.exports = function(mongoose) {
     collectionName: modelName,
     routeOptions: {
       associations: {
-        users: {
-          type: "MANY_MANY",
+        user: {
+          type: "MANY_ONE",
           model: "user"
         },
-        folders:{
+        folder:{
           type:"MANY_ONE",
           model: "folder"
         }

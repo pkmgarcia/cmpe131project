@@ -10,8 +10,12 @@ module.exports = function (mongoose) {
     },
     parent:{
       type: Types.String,
-      required: true
-    }    
+      required: false
+    },
+    user:{
+      type: Types.ObjectId,
+      ref: "user"
+    }
   });
 
   Schema.statics = {
@@ -20,14 +24,16 @@ module.exports = function (mongoose) {
       associations: {
         files:{
           type:"ONE_MANY",
+          foreignField: "folder",
           model:"file"
         },
-        users: {
-          type: "MANY_MANY",
+        user: {
+          type: "MANY_ONE",
           model: "user"
         },
         folders:{
           type:"ONE_MANY",
+          foreignField: "parent",
           model: "folder"
         }
       }

@@ -5,16 +5,24 @@ angular.module('profile')
 	'$scope',
 	function profileCtrl($http, Auth, $scope) {
 		var vm = this;
+
 		vm.firstName = Auth.getFirstName();
 		vm.lastName = Auth.getLastName();
-		$scope.model = Auth.getData();
-		//$scope.currentFolder = Auth.getFolder();
-		$scope.currentFolder = Auth.getCurrentFolder();
+		Auth.updateTimer();
 		$scope.folders = Auth.getFolders();
+		$scope.files = Auth.getFiles();
 
-
-		vm.createFolder = function() {
-			Auth.createFolder($scope.folderName);
+		vm.onSubmit = function () {
+			var folder = {
+				"name" : vm.params.folderName,
+				// TODO: Remove parent, have Auth service add the parent (currentFolder)
+				"parent" : ''
+			};
+			Auth.createFolder(folder).then(function(result){
+				Auth.updateTimer();
+				$scope.folders = Auth.getFolders();
+				$scope.files = Auth.getFiles();
+			});
 		};
 
 		vm.deleteFile = function(fileId) {
@@ -23,23 +31,24 @@ angular.module('profile')
 			}
 			console.log(params);
 			// Delete file from S3
-			// $http.post("/deleteFromS3", params)
-			// 	.then(function successCallback(result) {
+			$http.post("/deleteFromS3", params)
+				.then(function successCallback(result) {
 					console.log("Successfully deleted from S3");
 
-					id = params.fileId;
+					var key = result.data.Deleted[0].Key;
+
 					var config = {
 						headers: {
 							Authorization: Auth.getToken()
 						}
 					}
 					// Remove file from user.
-					$http.delete('/user/' + Auth.getId() + '/file/' + id, config)
+					$http.delete('/user/' + Auth.getId() + '/file/' + result.data.Deleted[0].Key, config)
 						.then(function successCallback(result) {
 							console.log("Successfully removed file from user");
 								var config = {
 									data: [ {
-										_id : id,
+										_id : key,
 										hardDelete: true
 									}],
 									headers: {
@@ -61,7 +70,7 @@ angular.module('profile')
 				}, function errorCallback(result) {
 					console.log("Error deleting from S3");
 					console.log(result);
-				//})
+				})
 		}
     }
 ]);
