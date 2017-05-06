@@ -6,6 +6,11 @@ angular.module('profile')
 	function profileCtrl($http, Auth, $scope) {
 		var vm = this;
 
+		Auth.getRootFolder()
+			.then(function(result) {
+				$scope.rootFolder = result;
+			});
+
 		vm.firstName = Auth.getFirstName();
 		vm.lastName = Auth.getLastName();
 		$scope.folders = Auth.getFolders();
@@ -23,6 +28,14 @@ angular.module('profile')
 			});
 		};
 
+		vm.changeFolder = function(folderId) {
+			Auth.changeFolder(folderId)
+				.then(function(result) {
+					Auth.updateFolders();
+					Auth.updateFiles();
+				});
+		};
+
 		vm.deleteFile = function(fileId) {
 			var params = {
 				"fileId": fileId
@@ -31,10 +44,9 @@ angular.module('profile')
 			// Delete file from S3
 			$http.post("/deleteFromS3", params)
 				.then(function successCallback(result) {
-					console.log("Successfully deleted from S3");
+					Materialize.toast("Successfully deleted file.");
 
 					var key = result.data.Deleted[0].Key;
-
 					var config = {
 						headers: {
 							Authorization: Auth.getToken()

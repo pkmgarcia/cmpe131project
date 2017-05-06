@@ -9,12 +9,15 @@
     <file-viewer></file-viewer>
 
     <form class="col s12" ng-submit="vm.onSubmit()">
-      <div class="row">
-        <div class="input-field col s8">
+      <div class="row valign-wrapper">
+        <i class="small material-icons col s1">create_new_folder</i>
+        <div class="input-field col s6">
           <input id="folder_name" ng-model="vm.params.folderName" type="text">
           <label for="folder_name">Folder Name</label>
-            </div>
-        <button class="red btn s4 valign-wrapper" type="submit">Create Folder</button>
+        </div>
+        <btn class="red btn col s2" type="submit">Create</btn>
+        <div class="col s1"></div>
+        <btn class="grey btn col s2" ng-click="vm.changeFolder(rootFolder)">Home</btn>
       </div>
     </form>
 
@@ -23,7 +26,8 @@
         <div class="container">
           <div class="row">
             <i class="small material-icons col s1">folder</i>
-            <h6 class="col s10">{{x.name}}</h6>
+            <h6 class="col s4">{{x.name}}</h6>
+            <btn class="red btn col s2" ng-click="vm.changeFolder(x._id)">Move To</btn>
           </div>
         </div>
       </li>
