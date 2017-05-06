@@ -15,7 +15,7 @@ angular.module('core.uploadFile')
 				if(xhr.readyState === 4){
 					if(xhr.status === 200){
 						Materialize.toast('Uploaded ' + file.name + ' to S3');
-						Auth.updateTimer();
+						Auth.updateFiles();
 					}
 					else{
 						alert('Could not upload file.');

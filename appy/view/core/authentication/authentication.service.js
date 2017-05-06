@@ -37,7 +37,6 @@ angular.module('core.authentication')
     };
 
     this.getFolders = function() {
-      console.log("getFolders calling updateFolders");
       self.updateFolders();
       return folders;
     };
@@ -55,7 +54,7 @@ angular.module('core.authentication')
       return age;
     };
     this.updateFiles = function() {
-      var userId = this.getId();
+      var userId = self.getId();
       headers: {
         authorization: $window.localStorage['token']
       }
@@ -76,7 +75,7 @@ angular.module('core.authentication')
           console.log("Error in Auth.updateTimer.");
           console.log(result);
           files.lastUpdated = [];
-        });;
+        });
     };
 
     this.updateFolders = function() {
