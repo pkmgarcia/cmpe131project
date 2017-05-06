@@ -8,7 +8,6 @@ angular.module('profile')
 
 		vm.firstName = Auth.getFirstName();
 		vm.lastName = Auth.getLastName();
-		Auth.updateTimer();
 		$scope.folders = Auth.getFolders();
 		$scope.files = Auth.getFiles();
 
@@ -19,7 +18,6 @@ angular.module('profile')
 				"parent" : ''
 			};
 			Auth.createFolder(folder).then(function(result){
-				Auth.updateTimer();
 				$scope.folders = Auth.getFolders();
 				$scope.files = Auth.getFiles();
 			});
@@ -63,6 +61,7 @@ angular.module('profile')
 									console.log("Error deleting file from database.");
 									console.log(result);
 								});
+							console.log("UpdateTimer called in deleteFile");
 							Auth.updateTimer();
 						}, function errorCallback(result) {
 							console.log("Error removing file from user.");

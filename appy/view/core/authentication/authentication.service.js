@@ -37,6 +37,7 @@ angular.module('core.authentication')
     };
 
     this.getFolders = function() {
+      console.log("getFolders calling updateFolders");
       self.updateFolders();
       return folders;
     };
@@ -53,7 +54,72 @@ angular.module('core.authentication')
     this.getAge = function() {
       return age;
     };
+    this.updateFiles = function() {
+      var userId = this.getId();
+      headers: {
+        authorization: $window.localStorage['token']
+      }
+      $http.get('/user/' + userId + '/file')
+        .then(function successCallback(result) {
+          if(result.data.docs !== undefined){
+            if(files.lastUpdated === null) {
+              console.log("files.lastUpdated is null");
+            }
+            files.lastUpdated = [];
+            for (i = 0; i < result.data.docs.length; i++) {
+              files.lastUpdated.push(result.data.docs[i]);
+            }
+            console.log("In updateTimer: ");
+            console.log(files.lastUpdated);
+          }
+        }, function errorCallback(result) {
+          console.log("Error in Auth.updateTimer.");
+          console.log(result);
+          files.lastUpdated = [];
+        });;
+    };
 
+    this.updateFolders = function() {
+      if(currentFolder !== ''){
+        headers: {
+          authorization: $window.localStorage['token']
+        }
+        $http.get('/folder/' + currentFolder + '/folder')
+          .then(function successCallback(result) {
+            if(result.data.docs !== undefined){
+              console.log("docs not null");
+              if(folders.lastUpdated === null) {
+                console.log("folders.lastUpdated is null");
+              }
+              folders.lastUpdated = [];
+              for (i = 0; i < result.data.docs.length; i++) {
+                folders.lastUpdated.push(result.data.docs[i]);
+              }
+              console.log(folders.lastUpdated)
+            }
+          }, function errorCallback(result) {
+            console.log("Error in Auth.updateTimer.");
+            console.log(result);
+            folders.lastUpdated = [];
+          });
+      } else {
+        console.log("Checking for root folder");
+        $http.get('/folder?user=' + self.getId() + '&name=root')
+          .then(function successCallback(result) {
+            if(result.data.docs.length === 1){
+              currentFolder = result.data.docs[0]._id;
+              self.updateFolders();
+            } else {
+              self.createRootFolder().then(function(result) {
+                currentFolder = result;
+              });            
+            }
+          }, function errorCallback(result) {
+              currentFolder = '';
+          });
+      }
+    };
+/*
     this.updateFiles = function() {
       var userId = this.getId();
       headers: {
@@ -69,22 +135,29 @@ angular.module('core.authentication')
         }
         return $http.get('/folder/' + currentFolder + '/folder');
       } else {
+        console.log("Checking for root folder");
         $http.get('/folder?user=' + self.getId() + '&name=root')
           .then(function successCallback(result) {
             if(result.data.docs.length === 1){
               currentFolder = result.data.docs[0]._id;
+              return $http.get('/folder/' + currentFolder + '/folder');
             } else {
-              self.createRootFolder();
+              self.createRootFolder().then(function(result) {
+                console.log("Returning from updateFolders with undefined");
+                currentFolder = result;
+                return $http.get('/folder/' + currentFolder + '/folder');
+              });            
             }
           }, function errorCallback(result) {
-            currentFolder = '';
+              currentFolder = '';
           });
       }
+
     };
+
     this.updateTimer = function() {
       this.updateFiles().then(function successCallback(result) {
           if(result.data.docs !== undefined){
-            console.log("docs not null");
             if(files.lastUpdated === null) {
               console.log("files.lastUpdated is null");
             }
@@ -100,8 +173,11 @@ angular.module('core.authentication')
           console.log(result);
           files.lastUpdated = [];
         });
-      console.log("currentFolder is : " + currentFolder);
-      if(currentFolder !== ''){
+
+      console.log("Finished updating files. CurrentFolder: " + currentFolder);
+      console.log("Updating folders.");
+
+     // if(currentFolder !== ''){
         console.log("Updating folders list.");
         this.updateFolders().then(function successCallback(result) {
             if(result.data.docs !== undefined){
@@ -120,26 +196,29 @@ angular.module('core.authentication')
             console.log(result);
             folders.lastUpdated = [];
           });
-      } else {
-        var query = self.getId() + '&name=root';
-        return $http.get('/folder?user=' + query)
-          .then(function successCallback(result) {
-            console.log(result);
-            if(result.data.docs.length === 1){
-              currentFolder = result.data.docs[0]._id;
-              self.updateTimer();
-              console.log("Root folder present.");
-              console.log("Root folder id: " + currentFolder);
-            } else {
-              self.createRootFolder();
-            }
-          }, function errorCallback(result){
-            console.log("Error Checking for root folder.");
-            console.log(result);
-          });
-      };
+        
+      // } else {
+      //   console.log("Checking for root folder in updateTimer()");
+      //   var query = self.getId() + '&name=root';
+      //   return $http.get('/folder?user=' + query)
+      //     .then(function successCallback(result) {
+      //       console.log(result);
+      //       if(result.data.docs.length === 1){
+      //         currentFolder = result.data.docs[0]._id;
+      //         console.log("UpdateTimer called from UpdateTimer");
+      //         self.updateTimer();
+      //         console.log("Root folder present.");
+      //         console.log("Root folder id: " + currentFolder);
+      //       } else {
+      //         self.createRootFolder();
+      //       }
+      //     }, function errorCallback(result){
+      //       console.log("Error Checking for root folder.");
+      //       console.log(result);
+      //     });
+      // };
     };
-
+*/
     this.register = function(user) {
       return $http.post('/register', user)
         .then(function successCallback(response) {
@@ -159,7 +238,6 @@ angular.module('core.authentication')
             $window.localStorage['firstName'] = response.data.user['firstName'];
             $window.localStorage['lastName'] = response.data.user['lastName'];
             $http.defaults.headers.common.Authorization = response.data['refreshToken'];
-            self.updateTimer();
           }
           return response;
         }, function errorCallback(response) {
@@ -261,7 +339,6 @@ angular.module('core.authentication')
             user: userId,
             parent: currentFolder
           };
-          console.log(params);
           // Create the folder
           $http.post('/folder', params)
             // On success, add folder to user
@@ -278,7 +355,7 @@ angular.module('core.authentication')
                     $http.post('/folder/' + currentFolder + '/folder', params)
                       // On success, return with folderId
                       .then(function successCallback(result) {
-                        console.log("Successfully created folder.");
+                        console.log("Successfully created folder with no parent.");
                         resolve(folderId);
                       }, function errorCallback(result) {
                         console.log("Error in Auth.createFolder(folder): $http.post('/user/' + userId + '/folder/' + folderId)");         
@@ -305,9 +382,7 @@ angular.module('core.authentication')
         name : "root",
         parent: ""
       };
-      this.createFolder(folder).then(function(result) {
-        currentFolder = result;
-      });
+      return self.createFolder(folder);
     };
 
       this.addFileToFolder = function(fileID, folderID){

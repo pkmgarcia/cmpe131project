@@ -14,7 +14,6 @@ angular.module('login')
 			Auth.login(vm.credentials)
 				.then(function(response){
 					if(response.data['refreshToken']) {
-						//Auth.updateTimer();
 						$location.path('view/profile');
 					}
 				});
