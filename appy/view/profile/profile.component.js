@@ -62,7 +62,7 @@ angular.module('profile')
 									console.log(result);
 								});
 							console.log("UpdateTimer called in deleteFile");
-							Auth.updateTimer();
+							Auth.updateFiles();
 						}, function errorCallback(result) {
 							console.log("Error removing file from user.");
 						});
