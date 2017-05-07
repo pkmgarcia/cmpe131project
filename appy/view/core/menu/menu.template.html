@@ -5,41 +5,87 @@
 <nav class="red" role="navigation">
   <div class="nav-wrapper container">
 
-	<ul id="slide-out" class="side-nav fixed grey lighten-2">
-      <li>
-        <div class="userView red">
-	        <h4 class="white-text center-align">{{vm.firstName}} {{vm.lastName}}</h4>
+	<ul id="slide-out" class="side-nav fixed">
+    <li>
+      <div class="userView">
+        <div class="background">
+          <img src="view/assets/images/background.jpg">
         </div>
-        <a class="waves-effect waves-light black white-text center-align" ng-click="vm.onClick()">Logout</a>
-      </li>
-	  <li class="no-padding">
+        <a href="">
+          <img class="circle" src="view/assets/images/profile.png">
+        </a>
+        <a href="">
+          <p class="white-text">Welcome<br>{{vm.firstName}} {{vm.lastName}}</p>
+        </a>
+      </div>
+
+      <a class="waves-effect waves-light black white-text center-align" ng-click="vm.onClick()">Logout</a>
+    </li>
+    <li>
+      <div class="divider"></div>
+    </li>
+	  <li>
         <ul class="collapsible collapsible-accordion">
           <li>
-            <a class="collapsible-header">How to Use?<i class="material-icons">arrow_drop_down</i></a>
+            <a class="waves-effect waves-red collapsible-header">
+              <i class="material-icons">help</i>
+              To Download Files
+            </a>
             <div class="collapsible-body">
               <ul>
-		  <li><p class="black-text">1. Drag and drop things to the pokeball</p></li>
-		  <li><p class="black-text">2. Click Download button to download file</p></li>
-		  <li><p class="black-text">3. Click Delete button to delete file</p></li>
-		  <li><p class="black-text"> Enjoy your file sharing advanture</p></li>
+          		  <li>
+                  <p class="black-text center-align">Click "DOWNLOAD" button</p>
+                </li>
               </ul>
             </div>
           </li>
+          <li>
+            <a class="waves-effect waves-red collapsible-header">
+              <i class="material-icons">help</i>
+              To Delete Files
+            </a>
+            <div class="collapsible-body">
+              <ul>
+                <li>
+                  <p class="black-text center-align">Click "DELETE" button</p>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a class="waves-effect waves-red collapsible-header">
+              <i class="material-icons">help</i>
+              To Download Files
+            </a>
+            <div class="collapsible-body">
+              <ul>
+                <li>
+                  <p class="black-text center-align">Click "DOWNLOAD" button</p>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a class="waves-effect waves-red collapsible-header">
+              <i class="material-icons">help</i>
+              To Preview Files
+            </a>
+            <div class="collapsible-body">
+              <ul>
+                <li>
+                  <p class="black-text center-align">Click file names</p>
+                </li>
+              </ul>
+            </div>
+          </li>
+
         </ul>
       </li>
 	</ul>
-	<ul class="right hide-on-med-and-down">
-      <ul id='dropdown1' class='dropdown-content'>
-		  <li><p class="black-text">1. Drag and drop things to the pokeball</p></li>
-		  <li><p class="black-text">2. Click Download button to download file</p></li>
-		  <li><p class="black-text">3. Click Delete button to delete file</p></li>
-		  <li><p class="black-text"> Enjoy your file sharing advanture</p></li>
-      </ul>
-    </ul>
 
-  	<a id="logo-container" href="#" class="brand-logo center">Pok&eacuteHub<img src="view/core/fileViewer/img/logo.png" style="width: 40px; height: auto"></a>
+  <a id="logo-container" href="#" class="brand-logo center">Pok&eacuteHub<img src="view/core/fileViewer/img/logo.png" style="width: 40px; height: auto"></a>
 
-	<ul id="nav-mobile" class="right red">
+	<ul id="nav-mobile" class="left red">
 	    <li><a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">perm_identity</i></a></li>
 	</ul>
 

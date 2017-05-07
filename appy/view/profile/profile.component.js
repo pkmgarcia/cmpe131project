@@ -144,7 +144,7 @@ angular.module('profile')
 					console.log(result);
 				})
 		}
-
 		Waves.displayEffect();
+		Materialize.showStaggeredList('#staggered-list');
     }
 ]);

@@ -1,47 +1,56 @@
+<head>
+  <link href="view/profile/profile.style.css" type="text/css" rel="stylesheet" />
+</head>
+
+
 <header>
   <menu-bar></menu-bar>
 </header>
 
 <main>
   <div class="container">
-    <file-viewer></file-viewer>
-
-    <div class="container">
-      <div class="row">
-        <form class="col s12" ng-submit="vm.onSubmit()">
-          <div class="row valign-wrapper">
-            <i class="small material-icons col s1">create_new_folder</i>
-            <div class="input-field col s6">
-              <input id="folder_name" ng-model="vm.params.folderName" type="text">
-              <label for="folder_name">Folder Name</label>
-            </div>
-            <button ng-disabled="!vm.params.folderName" class="red btn col s2 waves-effect" type="submit">Create</button>
-            <div class="col s1"></div>
-            <btn class="grey btn col s2 waves-effect" ng-click="vm.changeFolderToRoot(rootFolder)">Home</btn>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <div class="container">
-      <nav>
-        <div class="nav-wrapper grey darken-3">
+    <ul id="staggered-list">
+      <li style="opacity: 0;">
+        <file-viewer></file-viewer>
+      </li>
+      <li style="opacity: 0;">
+        <div class="container">
           <div class="row">
-            <div class="col s12 center-align">
-              <a ng-click="vm.changeFolder(x._id,x.name,x.index)" ng-repeat="x in vm.breadCrumbs.lastUpdated" class="breadcrumb red-text">{{x.name}}</a>
-            </div>
+            <form class="col s12" ng-submit="vm.onSubmit()">
+              <div class="row valign-wrapper">
+                <i class="small material-icons col s1">create_new_folder</i>
+                <div class="input-field col s6">
+                  <input id="folder_name" ng-model="vm.params.folderName" type="text">
+                  <label for="folder_name">Folder Name</label>
+                </div>
+                <button ng-disabled="!vm.params.folderName" class="red btn col s2 waves-effect" type="submit">Create</button>
+                <div class="col s1"></div>
+                <btn class="grey btn col s2 waves-effect" ng-click="vm.changeFolderToRoot(rootFolder)">Home</btn>
+              </div>
+            </form>
           </div>
         </div>
-      </nav>
-    </div>
+      </li>
+      <li style="opacity: 0;">
+          <nav>
+            <div class="nav-wrapper grey darken-3">
+              <div class="row">
+                <div class="col s12 center-align">
+                  <a ng-click="vm.changeFolder(x._id,x.name,x.index)" ng-repeat="x in vm.breadCrumbs.lastUpdated" class="breadcrumb yellow-text">{{x.name}}</a>
+                </div>
+              </div>
+            </div>
+          </nav>
+      </li>
+    </ul>
 
     <div class="container">
       <ul>
         <li ng-repeat="x in folders.lastUpdated">
           <div class="container">
-            <div class="row">
+            <div class="row valign-wrapper">
               <i class="small material-icons col s1">folder</i>
-              <h6 class="col s4">{{x.name}}</h6>
+              <p class="col s4">{{x.name}}</p>
               <btn class="red btn col s3 waves-effect" ng-click="vm.changeFolder(x._id, x.name)">Move To</btn>
               <div class="col s1"></div>
               <btn class="grey btn col s3 waves-effect" ng-click="vm.deleteFolder(x._id)">Delete</btn>
@@ -57,7 +66,7 @@
           <div class="container">
             <div class="row">
               <i class="small material-icons col s1">insert_drive_file</i>
-              <h6 class="col s4">{{x.name}}</h6>
+              <a href="{{x.path}}" class="col s4">{{x.name}}</a>
               <a class="red btn col s3 waves-effect" ng-href="{{x.path}}" download="{{x.name}}">Download</a>
               <div class="col s1"></div>
               <btn class="grey btn col s3 waves-effect" ng-click="vm.deleteFile(x._id)">Delete</btn>

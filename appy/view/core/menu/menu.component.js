@@ -16,12 +16,14 @@ angular.module('core.menu')
 				}
 			}
 
-	        $(".button-collapse").sideNav({
-    	    	edge: 'right', // Choose the horizontal origin
-	        });
-	        Waves.displayEffect();
-	        $('.dropdown-button').dropdown();
-			$('.collapsible').collapsible();
+			$(document).ready(function(){
+		   		$('.collapsible').collapsible();
+		        $(".button-collapse").sideNav({
+	    	    	edge: 'left', // Choose the horizontal origin
+		        });
+		        Waves.displayEffect();
+		        $('.dropdown-button').dropdown();
+	  		});
 		}
 	],
 	controllerAs: 'vm'
