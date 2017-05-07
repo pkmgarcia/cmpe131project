@@ -1,4 +1,5 @@
 angular.module('status.emailSent')
-	.controller('emailSentCtrl', function emailSentCtrl()
-		{ }
+	.controller('emailSentCtrl', function emailSentCtrl() {
+		Materialize.showStaggeredList('#staggered-list');
+	}
 );

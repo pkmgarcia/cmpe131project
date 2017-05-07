@@ -20,4 +20,5 @@ angular.module('login')
 		};
 
 		Waves.displayEffect();
+		Materialize.showStaggeredList('#staggered-list');
 	}]);

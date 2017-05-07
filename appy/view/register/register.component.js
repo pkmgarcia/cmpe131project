@@ -43,5 +43,6 @@ angular.module('register')
 			};
 
 			Waves.displayEffect();
+			Materialize.showStaggeredList('#staggered-list');
 		}
 	]);

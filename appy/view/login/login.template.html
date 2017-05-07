@@ -1,36 +1,45 @@
+<head>
+	<link href="view/login/login.style.css" type="text/css" rel="stylesheet" />
+</head>
+
 <header>
 	<nav class="red" role="navigation">
-	  <div class="nav-wrapper container"><a id="logo-container" href="view/" class="brand-logo center">PokeHub<img src="view/core/fileViewer/img/logo.png" style="width: 40px; height: auto"></a>
+	  <div class="nav-wrapper container"><a id="logo-container" href="view/" class="brand-logo center">Pok&eacuteHub<img src="view/core/fileViewer/img/logo.png" style="width: 40px; height: auto"></a>
 	  </div>
 	</nav>
 </header>
 
-<main>
+<main class="valign-wrapper">
 	<div class="container">
-		<div class="row">
-			<h1 class="header black-text">Login</h1>
-			<p class="lead">Not a member? Please <a href="view/register">register</a> instead.</p>
-			<div class="divider"></div>
-		</div>
-		<div class="row">
-			<form class="col s12" ng-submit="vm.onSubmit()">
+		<ul id="staggered-list">
+			<li style="opacity: 0;">
 				<div class="row">
-					<div class="input-field col s12">
-						<input id="email" type="email" class="validate" ng-model="vm.credentials.email">
-						<label for="email">Email</label>
-					</div>
+					<h1 class="black-text">Login</h1>
+					<p>Not a member? Please <a href="view/register">register</a> instead.</p>
+					<div class="divider"></div>
 				</div>
+			</li>
+			<li style="opacity: 0;">
 				<div class="row">
-					<div class="input-field col s12">
-						<input id="password" type="password" class="validate" ng-model="vm.credentials.password">
-						<label for="password">Password</label>
-					</div>
+					<form class="col s12" ng-submit="vm.onSubmit()">
+						<div class="row">
+							<div class="input-field col s12">
+								<input id="email" type="email" class="validate" ng-model="vm.credentials.email" required>
+								<label for="email">Email</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input id="password" type="password" class="validate" ng-model="vm.credentials.password" required>
+								<label for="password">Password</label>
+							</div>
+						</div>
+						<div class="row">
+							<button class="btn-large red waves-effect col s4 push-s8" type="submit">Submit</button>
+						</div>
+					</form>
 				</div>
-				<div class="row">
-					<button class="btn red waves-effect" type="submit">Submit</button>
-				</div>
-			</form>
-		</div>
+			</li>
 	</div>
 </main>
 

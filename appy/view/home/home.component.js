@@ -2,5 +2,5 @@ angular.module('home')
 .controller('homeCtrl',
 	function homeCtrl() { 
 		Waves.displayEffect();
-		$('.carousel.carousel-slider').carousel({fullWidth: true});
-});
+		Materialize.showStaggeredList('#staggered-list');
+	});

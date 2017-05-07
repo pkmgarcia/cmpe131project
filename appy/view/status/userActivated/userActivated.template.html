@@ -1,3 +1,7 @@
+<head>
+	<link href="view/status/status.style.css" type="text/css" rel="stylesheet" />
+</head>
+
 <header>
 	<nav class="red" role="navigation">
 	  <div class="nav-wrapper container"><a id="logo-container" href="view/" class="brand-logo center">PokeHub<img src="view/core/fileViewer/img/logo.png" style="width: 40px; height: auto"></a>
@@ -5,15 +9,18 @@
 	</nav>
 </header>
 
-<main>
+<main class="valign-wrapper">
 	<div class="container">
-		<div class="row">
-			<h1 class="header black-text">User Activated</h1>
-			<p class="lead">Gotcha! You were caught! Feel free to <a href="view/login">login</a>.</p>
-			<div class="divider"></div>
-			<p>Welcome to Pokehub!
-			</p>
-		</div>
+		<ul id="staggered-list">
+			<li style="opacity: 0px;">
+				<h1 class="header black-text">User Activated</h1>
+				<p class="lead">Gotcha! You were caught! Feel free to <a href="view/login">login</a>.</p>
+				<div class="divider"></div>
+			</li>
+			<li style="opacity: 0px;">
+				<p>Welcome to Pokehub!</p>
+			</li>
+		</ul>
 	</div>
 </main>
 
