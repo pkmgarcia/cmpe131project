@@ -144,5 +144,7 @@ angular.module('profile')
 					console.log(result);
 				})
 		}
+
+		Waves.displayEffect();
     }
 ]);
