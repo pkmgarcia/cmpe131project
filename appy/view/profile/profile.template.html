@@ -4,49 +4,70 @@
 
 <main>
   <div class="container">
-    <div class="container"/>
-
     <file-viewer></file-viewer>
 
-    <form class="col s12" ng-submit="vm.onSubmit()">
-      <div class="row valign-wrapper">
-        <i class="small material-icons col s1">create_new_folder</i>
-        <div class="input-field col s6">
-          <input id="folder_name" ng-model="vm.params.folderName" type="text">
-          <label for="folder_name">Folder Name</label>
-        </div>
-        <btn class="red btn col s2" type="submit">Create</btn>
-        <div class="col s1"></div>
-        <btn class="grey btn col s2" ng-click="vm.changeFolder(rootFolder)">Home</btn>
-      </div>
-    </form>
-
-    <ul>
-      <li ng-repeat="x in folders.lastUpdated">
-        <div class="container">
-          <div class="row">
-            <i class="small material-icons col s1">folder</i>
-            <h6 class="col s4">{{x.name}}</h6>
-            <btn class="red btn col s2" ng-click="vm.changeFolder(x._id)">Move To</btn>
-          </div>
-        </div>
-      </li>
-    </ul>
-
-    <ul>
-      <li ng-repeat="x in files.lastUpdated">
-        <div class="container">
-          <div class="row">
-            <i class="small material-icons col s1">insert_drive_file</i>
-            <h6 class="col s4">{{x.name}}</h6>
-            <a class="red btn col s2" ng-href="{{x.path}}" download="{{x.name}}">Download</a>
+    <div class="container">
+      <div class="row">
+        <form class="col s12" ng-submit="vm.onSubmit()">
+          <div class="row valign-wrapper">
+            <i class="small material-icons col s1">create_new_folder</i>
+            <div class="input-field col s6">
+              <input id="folder_name" ng-model="vm.params.folderName" type="text">
+              <label for="folder_name">Folder Name</label>
+            </div>
+            <btn class="red btn col s2" type="submit">Create</btn>
             <div class="col s1"></div>
-            <btn class="grey btn col s2" ng-click="vm.deleteFile(x._id)">Delete</btn>
+            <btn class="grey btn col s2" ng-click="vm.changeFolder(rootFolder)">Home</btn>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="container">
+      <nav>
+        <div class="nav-wrapper grey darken-3">
+          <div class="row">
+            <div class="col s12 center-align">
+              <a ng-click="vm.changeFolder(x._id,x.name,x.index)" ng-repeat="x in vm.breadCrumbs.lastUpdated" class="breadcrumb red-text">{{x.name}}</a>
+            </div>
           </div>
         </div>
-      </li>
-    </ul>
-    
+      </nav>
+    </div>
+
+    <div class="container">
+      <ul>
+        <li ng-repeat="x in folders.lastUpdated">
+          <div class="container">
+            <div class="row">
+              <i class="small material-icons col s1">folder</i>
+              <h6 class="col s4">{{x.name}}</h6>
+              <btn class="red btn col s3" ng-click="vm.changeFolder(x._id, x.name)">Move To</btn>
+              <div class="col s1"></div>
+              <btn class="grey btn col s3" ng-click="vm.deleteFolder(x._id)">Delete</btn>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="container">
+      <ul>
+        <li ng-repeat="x in files.lastUpdated">
+          <div class="container">
+            <div class="row">
+              <i class="small material-icons col s1">insert_drive_file</i>
+              <h6 class="col s4">{{x.name}}</h6>
+              <a class="red btn col s3" ng-href="{{x.path}}" download="{{x.name}}">Download</a>
+              <div class="col s1"></div>
+              <btn class="grey btn col s3" ng-click="vm.deleteFile(x._id)">Delete</btn>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
 </main>
 
 <footer class="page-footer red">

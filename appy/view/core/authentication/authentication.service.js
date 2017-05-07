@@ -37,6 +37,10 @@ angular.module('core.authentication')
       return $window.localStorage['lastName'];
     };
 
+    this.getCurrentFolder = function() {
+      return currentFolder;
+    };
+
     this.getRootFolder = function () {
       return $q(function(resolve, reject) {
         setTimeout(function() {
@@ -76,26 +80,32 @@ angular.module('core.authentication')
     };
     this.updateFiles = function() {
       if(currentFolder !== '') {
-        headers: {
-          authorization: $window.localStorage['token']
-        }
-        $http.get('/folder/' + currentFolder + '/file')
-          .then(function successCallback(result) {
-            if(result.data.docs !== undefined){
-              if(files.lastUpdated === null) {
-                console.log("files.lastUpdated is null");
+          headers: {
+            authorization: $window.localStorage['token']
+          }
+          $http.get('/folder/' + currentFolder + '/file')
+            .then(function successCallback(result) {
+              if(result.data.docs !== undefined){
+                if(files.lastUpdated === null) {
+                  console.log("files.lastUpdated is null");
+                }
+                files.lastUpdated = [];
+                for (i = 0; i < result.data.docs.length; i++) {
+                  files.lastUpdated.push(result.data.docs[i]);
+                }
+                console.log(files.lastUpdated);
               }
+            }, function errorCallback(result) {
+              console.log("Error in Auth.updateTimer.");
+              console.log(result);
               files.lastUpdated = [];
-              for (i = 0; i < result.data.docs.length; i++) {
-                files.lastUpdated.push(result.data.docs[i]);
-              }
-              console.log(files.lastUpdated);
-            }
-          }, function errorCallback(result) {
-            console.log("Error in Auth.updateTimer.");
-            console.log(result);
-            files.lastUpdated = [];
-          });        
+            });        
+      } else {
+        this.getRootFolder()
+          .then(function(result) {
+            currentFolder = result;
+            self.updateFiles();
+          });
       }
 
       /*
@@ -383,12 +393,44 @@ angular.module('core.authentication')
       });
     };
 
-    this.addFileToFolder = function(fileID, folderID){
-    //add file to a folder 
-      var params = [fileId];
-      return $http.post('/folder/' + folderId + '/file', params)
+    this.deleteFolder = function(folderId) {
+      return $q(function(resolve, reject) {
+        setTimeout(function() {
+          $http.get('/folder/' + folderId + '/file')
+            .then(function successCallback(result) {
+              if(result.data.docs.length === 0) {
+                $http.get('/folder/' + folderId + '/folder')
+                  .then(function successCallback(result) {
+                    if(result.data.docs.length === 0) {
+                      var config = {
+                        data: [{
+                            "_id" : folderId,
+                            "hardDelete": true
+                          }]
+                      };
+                      $http.delete('/folder', config)
+                        .then(function successCallback(result) {
+                          self.updateFolders();
+                          resolve("Folder successfully deleted.");
+                        }, function errorCallback(result) {
+                          reject("Error deleting folder.");
+                        });
+                    } else {
+                      reject("Only empty folders can be deleted.");
+                    }
+                  }, function errorCallback(result) {
+                    console.log("Error getting folders of a folder.");
+                  });
+              } else {
+                reject("Only empty folders can be deleted.");
+              }
+            }, function errorCallback(result) {
+              console.log("Error getting files of a folder.");
+              reject(result);
+            });
+        }, 1000);
+      });
     };
-
     /*
     this.getMyFolders = function() {
       var query = self.getId();
