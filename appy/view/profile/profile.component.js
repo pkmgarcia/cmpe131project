@@ -31,6 +31,16 @@ angular.module('profile')
 			});
 		};
 
+		vm.changeFolderToRoot = function() {
+			Auth.changeFolder($scope.rootFolder)
+				.then(function(result) {
+					vm.breadCrumbs.lastUpdated = [];
+
+					Auth.updateFolders();
+					Auth.updateFiles();
+				});
+		};
+
 		vm.changeFolder = function(folderId, folderName, index) {
 			Auth.changeFolder(folderId)
 				.then(function(result) {
